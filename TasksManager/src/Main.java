@@ -30,6 +30,15 @@ public class Main {
         // Распечатать списки всех задач
         System.out.println(tasksManager);
 
+        // Распечатать списки всех задач по типам
+        System.out.println(tasksManager.getTasks());
+        System.out.println(tasksManager.getEpics());
+        System.out.println(tasksManager.getSubtasks());
+
+        // Поменять обычную задачу
+        Task task01 = new Task("Task01", "DescrT01", "NEW");
+        tasksManager.updateUsualTask(task01, task1.getId()); // Новые данные и существующий ID
+
         // Изменить статусы
         // Распечатать списки всех задач
 
