@@ -4,10 +4,16 @@ public class Task {
     private int id = 0;
     private String status;
 
-    Task(String name, String description, String status) {
+    public Task(String name, String description, String status) {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.status = "NEW";
     }
 
     @Override

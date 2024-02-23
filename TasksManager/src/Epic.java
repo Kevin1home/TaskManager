@@ -2,9 +2,15 @@ import java.util.ArrayList;
 
 public class Epic extends Task {
     ArrayList<Subtask> subtasks = new ArrayList<>();
+
     public Epic(String name, String description, String status) {
         super(name, description, status);
     }
+
+    public Epic(String name, String description) {
+        super(name, description);
+    }
+
     @Override
     public String toString() {
         return "Epic{" +
@@ -13,10 +19,6 @@ public class Epic extends Task {
                 ", id=" + this.getId() +
                 ", status='" + this.getStatus() + '\'' +
                 '}';
-    }
-
-    public void printSubtasks() {
-        System.out.println("subtasks = " + subtasks);
     }
 
 }
