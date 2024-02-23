@@ -12,34 +12,27 @@ public class TasksManager {
     }
 
     public void createTask(Task task) {
-        task.setId(generateId(task.getId())); // получить ID, создать новый и поменять на новый
-        HashMap<Integer, Task> tasks = getTasks();
+        task.setId(generateId()); // создать новый ID и поменять
         tasks.put(task.getId(), task); // добавить в setTasks новую задачу с её ID
-        setTasks(tasks);
     }
 
     public void createEpic(Epic epic) {
-        epic.setId(generateId(epic.getId())); // получить ID, создать новый и поменять на новый
+        epic.setId(generateId()); // создать новый ID и поменять
         epic.setStatus(checkStatusEpic(epic));
-        HashMap<Integer, Epic> epics = getEpics();
         epics.put(epic.getId(), epic); // добавить в setTasks новую задачу с её ID
-        setEpics(epics);
     }
 
     public void createSubtask(Subtask subtask) {
-        subtask.setId(generateId(subtask.getId())); // получить ID, создать новый и поменять на новый
+        subtask.setId(generateId()); // создать новый ID и поменять
         Epic epic = epics.get(subtask.getIdEpic());
         epic.subtasks.add(subtask);
         epic.setStatus(checkStatusEpic(epic));
-        HashMap<Integer, Subtask> subtasks = getSubtasks();
         subtasks.put(subtask.getId(), subtask); // добавить в setTasks новую задачу с её ID
-        setSubtasks(subtasks);
     }
 
     public void updateUsualTask(Task task, int id) { // Новые данные в существующий ID
         tasks.replace(id, task);
         task.setId(id);
-
     }
 
     public void updateEpic(Epic epic, int id) { // Новые данные в существующий ID
@@ -95,10 +88,14 @@ public class TasksManager {
     }
 
     public void deleteEpicById(int id) {
+        epics.get(id).subtasks.clear();
         epics.remove(id);
     }
 
     public void deleteSubtaskById(int id) {
+        Epic epic = epics.get(subtasks.get(id).getIdEpic());
+        epic.subtasks.remove(subtasks.get(id));
+        epic.setStatus(checkStatusEpic(epic));
         subtasks.remove(id);
     }
 
@@ -120,14 +117,13 @@ public class TasksManager {
         subtasks.clear();
     }
 
-    public int generateId (int id) {
-        id = nextId++;
-        return id;
+    public int generateId () {
+        return nextId++;
     }
 
     @Override
     public String toString() {
-        return "TasksManager{" + "\n" +
+        return "AllTasks{" + "\n" +
                 "tasks=" + tasks +
                 ", " + "\n" + "epics=" + epics +
                 ", " + "\n" + "subtasks=" + subtasks +

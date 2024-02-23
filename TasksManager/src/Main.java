@@ -46,8 +46,8 @@ public class Main {
         System.out.println("\nПолучение списка всех подзадач определённого эпика");
         tasksManager.printEpicSubtasks(epic2);
 
-        // Поменять обычную задачу
-        System.out.println("\nПоменять обычную задачу");
+        // Обновить обычную задачу
+        System.out.println("\nОбновить обычную задачу");
         System.out.println("Было");
         System.out.println(tasksManager.getTasks());
         Task task01 = new Task("Task01", "DescrT01", "NEW");
@@ -55,8 +55,8 @@ public class Main {
         System.out.println("Стало");
         System.out.println(tasksManager.getTasks());
 
-        // Поменять Epic
-        System.out.println("\nПоменять Epic");
+        // Обновить Epic
+        System.out.println("\nОбновить Epic");
         System.out.println("Было");
         System.out.println(tasksManager.getEpics());
         Epic epic02 = new Epic("Epic02", "DescrEp02");
@@ -64,8 +64,8 @@ public class Main {
         System.out.println("Стало");
         System.out.println(tasksManager.getEpics());
 
-        // Поменять Subtask
-        System.out.println("\nПоменять Subtask");
+        // Обновить Subtask
+        System.out.println("\nОбновить Subtask");
         System.out.println("Было");
         System.out.println("Эпики");
         System.out.println(tasksManager.getEpics());
@@ -80,7 +80,7 @@ public class Main {
         System.out.println(tasksManager.getSubtasks());
 
         // Изменить статус у обычной задачи
-        System.out.println("\nПоменять статус у обычной задачи");
+        System.out.println("\nИзменить статус у обычной задачи");
         System.out.println("Было");
         System.out.println(tasksManager.getTasks());
         Task task001 = new Task("Task01", "DescrT01", "DONE");
@@ -89,7 +89,7 @@ public class Main {
         System.out.println(tasksManager.getTasks());
 
         // Изменить статус у Subtask
-        System.out.println("\nПоменять статус у Subtask");
+        System.out.println("\nИзменить статус у Subtask");
         System.out.println("Было");
         System.out.println("Эпики");
         System.out.println(tasksManager.getEpics());
