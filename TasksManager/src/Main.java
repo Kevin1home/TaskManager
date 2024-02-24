@@ -17,7 +17,7 @@ public class Main {
 
         // Создать 1x Epic с 2х Subtask и распечатать списки всех задач
         System.out.println("\nСоздать 1x Epic с 2х Subtask");
-        Epic epic1 = new Epic("Epic1", "DescrEp1", "NEW");
+        Epic epic1 = new Epic("Epic1", "DescrEp1");
         tasksManager.createEpic(epic1);
         Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "NEW", epic1.getId());
         tasksManager.createSubtask(subtask1);
@@ -27,7 +27,7 @@ public class Main {
 
         // Создать 1х Epic с 1х Subtask и распечатать списки всех задач
         System.out.println("\nСоздать 1x Epic с 1х Subtask");
-        Epic epic2 = new Epic("Epic2", "DescrEp2", "NEW");
+        Epic epic2 = new Epic("Epic2", "DescrEp2");
         tasksManager.createEpic(epic2);
         Subtask subtask3 = new Subtask("Subtask3", "DescrSt3", "NEW", epic2.getId());
         tasksManager.createSubtask(subtask3);
@@ -71,7 +71,7 @@ public class Main {
         System.out.println(tasksManager.getEpics());
         System.out.println("Подзадачи");
         System.out.println(tasksManager.getSubtasks());
-        Subtask subtask03 = new Subtask("Subtask03", "DescrSt03", "NEW", epic2.getId());
+        Subtask subtask03 = new Subtask("Subtask03", "DescrSt03", "NEW", epic02.getId());
         System.out.println("Стало");
         tasksManager.updateSubtask(subtask03, subtask3.getId()); // Новые данные и существующий ID
         System.out.println("Эпики");
@@ -95,7 +95,7 @@ public class Main {
         System.out.println(tasksManager.getEpics());
         System.out.println("Подзадачи");
         System.out.println(tasksManager.getSubtasks());
-        Subtask subtask02 = new Subtask("Subtask2", "DescrSt2", "DONE", epic1.getId());
+        Subtask subtask02 = new Subtask("Subtask2", "DescrSt2", "DONE", epic2.getId());
         tasksManager.updateSubtask(subtask02, subtask03.getId()); // Новые данные и существующий ID
         System.out.println("Стало");
         System.out.println("Эпики");
@@ -111,6 +111,22 @@ public class Main {
         tasksManager.deleteTaskById(task2.getId());
         System.out.println("Стало");
         System.out.println(tasksManager.getTasks());
+
+        /*
+        // Удалить все подзадачи
+        System.out.println("\nУдалить все подзадачи");
+        System.out.println("Было");
+        System.out.println("Эпики");
+        System.out.println(tasksManager.getEpics());
+        System.out.println("Подзадачи");
+        System.out.println(tasksManager.getSubtasks());
+        tasksManager.deleteAllSubtasks();
+        System.out.println("Стало");
+        System.out.println("Эпики");
+        System.out.println(tasksManager.getEpics());
+        System.out.println("Подзадачи");
+        System.out.println(tasksManager.getSubtasks());
+        */
 
         // Удалить 1х Epic
         System.out.println("\nУдалить 1х Epic");
@@ -133,5 +149,6 @@ public class Main {
         tasksManager.deleteAllTasksAllTypes();
         System.out.println("Стало");
         System.out.println(tasksManager);
+
     }
 }
