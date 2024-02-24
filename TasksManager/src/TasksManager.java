@@ -30,7 +30,9 @@ public class TasksManager {
     }
 
     public void updateUsualTask(Task task, int id) { // Новые данные в существующий ID
-        tasks.replace(id, task);
+        tasks.remove(id);
+        tasks.put(id, task);
+        // tasks.replace(id, task);
         task.setId(id);
     }
 
@@ -81,6 +83,33 @@ public class TasksManager {
         return epics.get(id);
     }
 
+    public int getEpicIdByName(String epicName) {
+        for (Epic epic : epics.values()) {
+            if (epic.getName().equals(epicName)) {
+                return epic.getId();
+            }
+        }
+        return 0;
+    }
+
+    public int getUsualTaskIdByName(String taskName) {
+        for (Task task : tasks.values()) {
+            if (task.getName().equals(taskName)) {
+                return task.getId();
+            }
+        }
+        return 0;
+    }
+
+    public int getSubtaskIdByName(String subtaskName) {
+        for (Subtask subtask : subtasks.values()) {
+            if (subtask.getName().equals(subtaskName)) {
+                return subtask.getId();
+            }
+        }
+        return 0;
+    }
+
     public Subtask getSubtaskById(int id) {
         return subtasks.get(id);
     }
@@ -90,10 +119,14 @@ public class TasksManager {
     }
 
     public void deleteEpicById(int id) {
+        ArrayList<Integer> subtasksIdsToDelete = new ArrayList<>();
         for (Subtask subtask : subtasks.values()) {
             if (subtask.idEpic == id) {
-                deleteSubtaskById(subtask.getId());
+                subtasksIdsToDelete.add(subtask.getId());
             }
+        }
+        for (Integer subtaskIdToDelete : subtasksIdsToDelete) {
+            subtasks.remove(subtaskIdToDelete);
         }
         epics.get(id).subtasks.clear();
         epics.remove(id);
