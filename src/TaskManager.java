@@ -1,3 +1,5 @@
+import java.util.List;
+
 public interface TaskManager {
 
     // Создать
@@ -8,16 +10,20 @@ public interface TaskManager {
     // Сгенерировать ID
     int generateId();
 
-    // Напечатать
+    // Напечатать подзадачи Епика
     void printEpicSubtasks(Epic epic);
 
     // Обновить статус у Epic
-    String checkStatusEpic(Epic epic);
+    void checkStatusEpic(Epic epic);
 
     // Обновить
     void updateUsualTask(Task task, int id); // Новые данные в существующий ID
     void updateEpic(Epic epic, int id); // Новые данные в существующий ID
     void updateSubtask(Subtask subtask, int id); // Новые данные в существующий ID
+
+    // Получить и обновить историю просмотров задач
+    List<Task> getHistory();
+    void updateHistory();
 
     // Получить задачу по ID
     Task getUsualTaskById(int id);
