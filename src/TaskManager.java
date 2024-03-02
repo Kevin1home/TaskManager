@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.HashMap;
 
 public interface TaskManager {
 
@@ -21,10 +21,6 @@ public interface TaskManager {
     void updateEpic(Epic epic, int id); // Новые данные в существующий ID
     void updateSubtask(Subtask subtask, int id); // Новые данные в существующий ID
 
-    // Получить и обновить историю просмотров задач
-    List<Task> getHistory();
-    void updateHistory();
-
     // Получить задачу по ID
     Task getUsualTaskById(int id);
     Epic getEpicById(int id);
@@ -34,6 +30,11 @@ public interface TaskManager {
     int getUsualTaskIdByName(String taskName);
     int getEpicIdByName(String epicName);
     int getSubtaskIdByName(String subtaskName);
+
+    // Получить списки задач по типу
+    HashMap<Integer, Task> getTasks();
+    HashMap<Integer, Epic> getEpics();
+    HashMap<Integer, Subtask> getSubtasks();
 
     // Удалить задачу по ID
     void deleteTaskById(int id);
