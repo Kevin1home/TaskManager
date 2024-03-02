@@ -1,6 +1,14 @@
+package managers;
+
 import java.util.HashMap;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
 
 public interface TaskManager {
+
+    // Получить объект класса с интерфесом HistoryManager
+    HistoryManager getHistoryManager();
 
     // Создать
     void createTask(Task task);
@@ -13,7 +21,7 @@ public interface TaskManager {
     // Напечатать подзадачи Епика
     void printEpicSubtasks(Epic epic);
 
-    // Обновить статус у Epic
+    // Обновить статус у tasks.Epic
     void checkStatusEpic(Epic epic);
 
     // Обновить
