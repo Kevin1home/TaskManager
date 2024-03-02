@@ -43,24 +43,24 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void checkStatusEpic(Epic epic) {
         if (epic.subtasks.isEmpty()) {
-            epic.setStatus("NEW");
+            epic.setStatus(TaskStatus.NEW);
         }
-        ArrayList<String> statuses = new ArrayList<>();
+        ArrayList<TaskStatus> statuses = new ArrayList<>();
         for (Subtask subtask : epic.subtasks) {
-            if (subtask.getStatus().equals("NEW")) {
-                statuses.add("NEW");
-            } else if (subtask.getStatus().equals("IN_PROGRESS")) {
-                statuses.add("IN_PROGRESS");
-            } else if (subtask.getStatus().equals("DONE")) {
-                statuses.add("DONE");
+            if (subtask.getStatus().equals(TaskStatus.NEW)) {
+                statuses.add(TaskStatus.NEW);
+            } else if (subtask.getStatus().equals(TaskStatus.IN_PROGRESS)) {
+                statuses.add(TaskStatus.IN_PROGRESS);
+            } else if (subtask.getStatus().equals(TaskStatus.DONE)) {
+                statuses.add(TaskStatus.DONE);
             }
         }
-        if (statuses.contains("NEW") && !(statuses.contains("IN_PROGRESS")) && !(statuses.contains("DONE"))) {
-            epic.setStatus("NEW");
-        } else if (!(statuses.contains("NEW")) && !(statuses.contains("IN_PROGRESS")) && statuses.contains("DONE")) {
-            epic.setStatus("DONE");
+        if (statuses.contains(TaskStatus.NEW) && !(statuses.contains(TaskStatus.IN_PROGRESS)) && !(statuses.contains(TaskStatus.DONE))) {
+            epic.setStatus(TaskStatus.NEW);
+        } else if (!(statuses.contains(TaskStatus.NEW)) && !(statuses.contains(TaskStatus.IN_PROGRESS)) && statuses.contains(TaskStatus.DONE)) {
+            epic.setStatus(TaskStatus.DONE);
         } else {
-            epic.setStatus("IN_PROGRESS");
+            epic.setStatus(TaskStatus.IN_PROGRESS);
         }
     }
 

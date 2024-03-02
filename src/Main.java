@@ -11,9 +11,9 @@ public class Main {
 
         // Создать 2x Task и распечатать списки всех задач
         System.out.println("\nСоздать 2x Task");
-        Task task1 = new Task("Task1", "DescrT1", "NEW");
+        Task task1 = new Task("Task1", "DescrT1", TaskStatus.NEW);
         inMemoryTaskManager.createTask(task1);
-        Task task2 = new Task("Task2", "Descr2", "NEW");
+        Task task2 = new Task("Task2", "Descr2", TaskStatus.NEW);
         inMemoryTaskManager.createTask(task2);
         System.out.println(inMemoryTaskManager);
 
@@ -21,9 +21,9 @@ public class Main {
         System.out.println("\nСоздать 1x Epic с 2х Subtask");
         Epic epic1 = new Epic("Epic1", "DescrEp1");
         inMemoryTaskManager.createEpic(epic1);
-        Subtask subtask1E1 = new Subtask("Subtask1", "DescrSt1", "NEW", epic1.getId());
+        Subtask subtask1E1 = new Subtask("Subtask1", "DescrSt1", TaskStatus.NEW, epic1.getId());
         inMemoryTaskManager.createSubtask(subtask1E1);
-        Subtask subtask2E1 = new Subtask("Subtask2", "DescrSt2", "NEW", epic1.getId());
+        Subtask subtask2E1 = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic1.getId());
         inMemoryTaskManager.createSubtask(subtask2E1);
         System.out.println(inMemoryTaskManager);
 
@@ -31,7 +31,7 @@ public class Main {
         System.out.println("\nСоздать 1x Epic с 1х Subtask");
         Epic epic2 = new Epic("Epic2", "DescrEp2");
         inMemoryTaskManager.createEpic(epic2);
-        Subtask subtask1E2 = new Subtask("Subtask3", "DescrSt3", "NEW", epic2.getId());
+        Subtask subtask1E2 = new Subtask("Subtask3", "DescrSt3", TaskStatus.NEW, epic2.getId());
         inMemoryTaskManager.createSubtask(subtask1E2);
         System.out.println(inMemoryTaskManager);
 
@@ -72,7 +72,7 @@ public class Main {
         System.out.println("\nОбновить обычную задачу");
         System.out.println("Было");
         System.out.println(inMemoryTaskManager.getTasks());
-        Task updateTask1 = new Task("Task01", "DescrT01", "NEW");
+        Task updateTask1 = new Task("Task01", "DescrT01", TaskStatus.NEW);
         inMemoryTaskManager.updateUsualTask(updateTask1, task1.getId()); // Полное обновление
         System.out.println("Стало");
         System.out.println(inMemoryTaskManager.getTasks());
@@ -94,7 +94,7 @@ public class Main {
         System.out.println("Подзадачи");
         System.out.println(inMemoryTaskManager.getSubtasks());
         System.out.println("Стало");
-        Subtask updateSubtask1E2 = new Subtask("Subtask03", "DescrSt03", "NEW", epic2.getId());
+        Subtask updateSubtask1E2 = new Subtask("Subtask03", "DescrSt03", TaskStatus.NEW, epic2.getId());
         inMemoryTaskManager.updateSubtask(updateSubtask1E2, subtask1E2.getId()); // Полное обновление
         System.out.println("Эпики");
         System.out.println(inMemoryTaskManager.getEpics());
@@ -105,7 +105,7 @@ public class Main {
         System.out.println("\nИзменить статус у обычной задачи");
         System.out.println("Было");
         System.out.println(inMemoryTaskManager.getTasks());
-        task2.setStatus("DONE"); // Частичное обновление
+        task2.setStatus(TaskStatus.DONE); // Частичное обновление
         System.out.println("Стало");
         System.out.println(inMemoryTaskManager.getTasks());
 
@@ -116,7 +116,7 @@ public class Main {
         System.out.println(inMemoryTaskManager.getEpics());
         System.out.println("Подзадачи");
         System.out.println(inMemoryTaskManager.getSubtasks());
-        subtask2E1.setStatus("DONE"); // Частичное обновление
+        subtask2E1.setStatus(TaskStatus.DONE); // Частичное обновление
         inMemoryTaskManager.checkStatusEpic(epic1); // Обновление статуса Epic
         System.out.println("Стало");
         System.out.println("Эпики");

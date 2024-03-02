@@ -2,9 +2,9 @@ public class Task {
     private String name;
     private String description;
     private int id = 0;
-    private String status;
+    private TaskStatus status;
 
-    public Task(String name, String description, String status) {
+    public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -13,7 +13,7 @@ public class Task {
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.status = "NEW";
+        this.status = TaskStatus.NEW;
     }
 
     @Override
@@ -50,11 +50,11 @@ public class Task {
         this.id = id;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 }
