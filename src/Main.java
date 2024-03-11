@@ -4,8 +4,100 @@ import tasks.*;
 public class Main {
     public static void main(String[] args) {
 
-        // ТЕСТИРОВАНИЕ
+    // ТЕСТИРОВАНИЕ (история просмотров)
 
+    // Новый TasksManager для вызовов и распечатать списки всех задач
+        System.out.println("Список задач пуст");
+    TaskManager taskManager = Managers.getDefault();
+        System.out.println(taskManager);
+
+    // Создать 2x tasks.Task и распечатать списки всех задач
+        System.out.println("\nСоздать 2x tasks.Task");
+    Task task1 = new Task("Task1", "DescrT1", TaskStatus.NEW);
+        taskManager.createTask(task1);
+    Task task2 = new Task("Task2", "Descr2", TaskStatus.NEW);
+        taskManager.createTask(task2);
+        System.out.println(taskManager);
+
+    // Создать 1x tasks.Epic с 3х tasks.Subtask и распечатать списки всех задач
+        System.out.println("\nСоздать 1x tasks.Epic с 2х tasks.Subtask");
+    Epic epic1 = new Epic("Epic1", "DescrEp1");
+        taskManager.createEpic(epic1);
+    Subtask subtask1E1 = new Subtask("Subtask1", "DescrSt1", TaskStatus.NEW, epic1.getId());
+        taskManager.createSubtask(subtask1E1);
+    Subtask subtask2E1 = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic1.getId());
+        taskManager.createSubtask(subtask2E1);
+    Subtask subtask3E1 = new Subtask("Subtask3", "DescrSt3", TaskStatus.NEW, epic1.getId());
+        taskManager.createSubtask(subtask3E1);
+        System.out.println(taskManager);
+
+    // Создать 1х tasks.Epic с 0х tasks.Subtask и распечатать списки всех задач
+        System.out.println("\nСоздать 1x tasks.Epic с 1х tasks.Subtask");
+    Epic epic2 = new Epic("Epic2", "DescrEp2");
+        taskManager.createEpic(epic2);
+        System.out.println(taskManager);
+
+    // Проверка историй
+        System.out.println("\nПроверка историй");
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(2);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getEpicById(3);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getSubtaskById(4);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getSubtaskById(5);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(2);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getSubtaskById(6);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getEpicById(7);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+
+    // Удалить 1х обычную задачу
+        System.out.println("\nУдалить 1х обычную задачу");
+        System.out.println("Было");
+        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.deleteTaskById(task2.getId());
+        taskManager.getHistoryManager().remove(task2.getId());
+        System.out.println("Стало");
+        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getHistoryManager().getHistory());
+
+    // Удалить 1х Epic
+        System.out.println("\nУдалить 1х tasks.Epic");
+        System.out.println("Было");
+        System.out.println("Эпики");
+        System.out.println(taskManager.getEpics());
+        System.out.println("Подзадачи");
+        System.out.println(taskManager.getSubtasks());
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.deleteEpicById(epic1.getId());
+        System.out.println("Стало");
+        System.out.println("Эпики");
+        System.out.println(taskManager.getEpics());
+        System.out.println("Подзадачи");
+        System.out.println(taskManager.getSubtasks());
+        System.out.println(taskManager.getHistoryManager().getHistory());
+
+    }
+
+    /*
+        // ТЕСТИРОВАНИЕ (Шаблоны)
 
         // Новый TasksManager для вызовов и распечатать списки всех задач
         System.out.println("Список задач пуст");
@@ -18,6 +110,24 @@ public class Main {
         taskManager.createTask(task1);
         Task task2 = new Task("Task2", "Descr2", TaskStatus.NEW);
         taskManager.createTask(task2);
+        System.out.println(taskManager);
+
+        // Создать 1x tasks.Epic с 3х tasks.Subtask и распечатать списки всех задач
+        System.out.println("\nСоздать 1x tasks.Epic с 2х tasks.Subtask");
+        Epic epic1 = new Epic("Epic1", "DescrEp1");
+        taskManager.createEpic(epic1);
+        Subtask subtask1E1 = new Subtask("Subtask1", "DescrSt1", TaskStatus.NEW, epic1.getId());
+        taskManager.createSubtask(subtask1E1);
+        Subtask subtask2E1 = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic1.getId());
+        taskManager.createSubtask(subtask2E1);
+        Subtask subtask3E1 = new Subtask("Subtask3", "DescrSt3", TaskStatus.NEW, epic1.getId());
+        taskManager.createSubtask(subtask3E1);
+        System.out.println(taskManager);
+
+    // Создать 1х tasks.Epic с 0х tasks.Subtask и распечатать списки всех задач
+        System.out.println("\nСоздать 1x tasks.Epic с 1х tasks.Subtask");
+        Epic epic2 = new Epic("Epic2", "DescrEp2");
+        taskManager.createEpic(epic2);
         System.out.println(taskManager);
 
         // Создать 1x tasks.Epic с 2х tasks.Subtask и распечатать списки всех задач
@@ -41,22 +151,16 @@ public class Main {
         // Проверка историй
         System.out.println("\nПроверка историй");
         System.out.println(taskManager.getHistoryManager().getHistory());
-        for (int i = 0; i < 2; i++) {
-            taskManager.getUsualTaskById(1);
-            System.out.println(taskManager.getHistoryManager().getHistory());
-            taskManager.getUsualTaskById(2);
-            System.out.println(taskManager.getHistoryManager().getHistory());
-            taskManager.getEpicById(3);
-            System.out.println(taskManager.getHistoryManager().getHistory());
-            taskManager.getSubtaskById(4);
-            System.out.println(taskManager.getHistoryManager().getHistory());
-            taskManager.getSubtaskById(5);
-            System.out.println(taskManager.getHistoryManager().getHistory());
-            taskManager.getEpicById(6);
-            System.out.println(taskManager.getHistoryManager().getHistory());
-            taskManager.getSubtaskById(7);
-            System.out.println(taskManager.getHistoryManager().getHistory());
-        }
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(2);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getEpicById(3);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getUsualTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
 
         // Распечатать списки всех задач по типам
         System.out.println("\nРаспечатать списки всех задач по типам");
@@ -135,7 +239,7 @@ public class Main {
         System.out.println("Стало");
         System.out.println(taskManager.getTasks());
 
-        // Удалить 1х tasks.Epic
+        // Удалить 1х Epic
         System.out.println("\nУдалить 1х tasks.Epic");
         System.out.println("Было");
         System.out.println("Эпики");
@@ -158,4 +262,6 @@ public class Main {
         System.out.println(taskManager);
 
     }
+         */
+
 }

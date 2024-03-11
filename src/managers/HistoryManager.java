@@ -9,4 +9,6 @@ public interface HistoryManager {
 
     List<Task> getHistory(); // Возвращать список
 
+    void remove(int id); // Удаление задачи из просмотра
+
 }
