@@ -5,17 +5,20 @@ public class Task {
     private String description;
     private int id = 0;
     private TaskStatus status;
+    protected TaskType type;
 
     public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.type = TaskType.TASK;
     }
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status = TaskStatus.NEW;
+        this.type = TaskType.TASK;
     }
 
     @Override
@@ -59,4 +62,9 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
+
+    public TaskType getType() {
+        return type;
+    }
+
 }

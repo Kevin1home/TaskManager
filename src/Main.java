@@ -1,9 +1,140 @@
 import managers.*;
 import tasks.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Main {
     public static void main(String[] args) {
 
+
+        System.out.println("ТЕСТИРОВАНИЕ (сохранение, 1 часть)");
+
+        Path path = Paths.get("Saves.txt");
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(path);
+        fileBackedTaskManager.loadSaves();
+
+
+
+        // Новый TasksManager для вызовов и распечатать списки всех задач
+        System.out.println("Список задач пуст");
+        System.out.println(fileBackedTaskManager);
+
+        // Создать 2x tasks.Task и распечатать списки всех задач
+        System.out.println("\nСоздать 2x tasks.Task");
+        Task task1 = new Task("Task1", "DescrT1", TaskStatus.NEW);
+        fileBackedTaskManager.createTask(task1);
+        Task task2 = new Task("Task2", "Descr2", TaskStatus.NEW);
+        fileBackedTaskManager.createTask(task2);
+        System.out.println(fileBackedTaskManager);
+
+        // Создать 1x tasks.Epic с 2х tasks.Subtask и распечатать списки всех задач
+        System.out.println("\nСоздать 1x tasks.Epic с 2х tasks.Subtask");
+        Epic epic1 = new Epic("Epic1", "DescrEp1");
+        fileBackedTaskManager.createEpic(epic1);
+        Subtask subtask1E1 = new Subtask("Subtask1", "DescrSt1", TaskStatus.NEW, epic1.getId());
+        fileBackedTaskManager.createSubtask(subtask1E1);
+        Subtask subtask2E1 = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic1.getId());
+        fileBackedTaskManager.createSubtask(subtask2E1);
+        System.out.println(fileBackedTaskManager);
+
+        // Создать 1х tasks.Epic с 1х tasks.Subtask и распечатать списки всех задач
+        System.out.println("\nСоздать 1x tasks.Epic с 1х tasks.Subtask");
+        Epic epic2 = new Epic("Epic2", "DescrEp2");
+        fileBackedTaskManager.createEpic(epic2);
+        Subtask subtask1E2 = new Subtask("Subtask3", "DescrSt3", TaskStatus.NEW, epic2.getId());
+        fileBackedTaskManager.createSubtask(subtask1E2);
+        System.out.println(fileBackedTaskManager);
+
+        // Проверка историй
+        System.out.println("\nПроверка историй");
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(1);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(1);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(2);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getEpicById(3);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(1);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getSubtaskById(4);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getSubtaskById(5);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(2);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(1);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getEpicById(6);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(1);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(1);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+
+        // Удалить 1х обычную задачу
+        System.out.println("\nУдалить 1х обычную задачу");
+        System.out.println("Было");
+        System.out.println(fileBackedTaskManager.getTasks());
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.deleteTaskById(task2.getId());
+        fileBackedTaskManager.getHistoryManager().remove(task2.getId());
+        System.out.println("Стало");
+        System.out.println(fileBackedTaskManager.getTasks());
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+
+        // Изменить статус у обычной задачи
+        System.out.println("\nИзменить статус у обычной задачи");
+        System.out.println("Было");
+        System.out.println(fileBackedTaskManager.getTasks());
+        task1.setStatus(TaskStatus.DONE); // Частичное обновление
+        System.out.println("Стало");
+        System.out.println(fileBackedTaskManager.getTasks());
+
+        // Изменить статус у tasks.Subtask
+        System.out.println("\nИзменить статус у tasks.Subtask");
+        System.out.println("Было");
+        System.out.println("Эпики");
+        System.out.println(fileBackedTaskManager.getEpics());
+        System.out.println("Подзадачи");
+        System.out.println(fileBackedTaskManager.getSubtasks());
+        subtask1E2.setStatus(TaskStatus.DONE); // Частичное обновление
+        fileBackedTaskManager.checkStatusEpic(epic2); // Обновление статуса tasks.Epic
+        System.out.println("Стало");
+        System.out.println("Эпики");
+        System.out.println(fileBackedTaskManager.getEpics());
+        System.out.println("Подзадачи");
+        System.out.println(fileBackedTaskManager.getSubtasks());
+
+        // Заполнение историй
+        System.out.println("\nЗаполнение истории");
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getUsualTaskById(1);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+        fileBackedTaskManager.getEpicById(3);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+
+
+        /*
+        System.out.println("ТЕСТИРОВАНИЕ (сохранение, 2 часть)");
+
+        Path path = Paths.get("C:\\Users\\kevin\\dev\\TaskManager\\Saves.txt");
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(path);
+        fileBackedTaskManager.loadSaves();
+
+        System.out.println(fileBackedTaskManager);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+
+        */
+
+
+
+
+        // ШАБЛОНЫ ДЛЯ ТЕСТИРОВАНИЯ
+
+    /*
     // ТЕСТИРОВАНИЕ (история просмотров)
 
     // Новый TasksManager для вызовов и распечатать списки всех задач
@@ -94,7 +225,7 @@ public class Main {
         System.out.println(taskManager.getSubtasks());
         System.out.println(taskManager.getHistoryManager().getHistory());
 
-    }
+*/
 
     /*
         // ТЕСТИРОВАНИЕ (Шаблоны)
@@ -124,7 +255,7 @@ public class Main {
         taskManager.createSubtask(subtask3E1);
         System.out.println(taskManager);
 
-    // Создать 1х tasks.Epic с 0х tasks.Subtask и распечатать списки всех задач
+        // Создать 1х tasks.Epic с 0х tasks.Subtask и распечатать списки всех задач
         System.out.println("\nСоздать 1x tasks.Epic с 1х tasks.Subtask");
         Epic epic2 = new Epic("Epic2", "DescrEp2");
         taskManager.createEpic(epic2);
@@ -260,8 +391,8 @@ public class Main {
         taskManager.deleteAllTasksAllTypes();
         System.out.println("Стало");
         System.out.println(taskManager);
+        */
 
     }
-         */
 
 }
