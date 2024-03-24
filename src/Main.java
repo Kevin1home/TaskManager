@@ -1,8 +1,6 @@
+import main_manager.Managers;
 import managers.*;
 import tasks.*;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,10 +8,7 @@ public class Main {
 
         System.out.println("ТЕСТИРОВАНИЕ (сохранение, 1 часть)");
 
-        Path path = Paths.get("Saves.txt");
-        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(path);
-        fileBackedTaskManager.loadSaves();
-
+        TaskManager fileBackedTaskManager = Managers.getDefault();
 
 
         // Новый TasksManager для вызовов и распечатать списки всех задач
@@ -117,13 +112,11 @@ public class Main {
         System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
 
 
-        /*
+
+
+/*
         System.out.println("ТЕСТИРОВАНИЕ (сохранение, 2 часть)");
-
-        Path path = Paths.get("C:\\Users\\kevin\\dev\\TaskManager\\Saves.txt");
-        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(path);
-        fileBackedTaskManager.loadSaves();
-
+        TaskManager fileBackedTaskManager = Managers.getDefault();
         System.out.println(fileBackedTaskManager);
         System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
 

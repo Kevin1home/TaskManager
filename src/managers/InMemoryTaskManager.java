@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import main_manager.Managers;
 import tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    protected final HashMap<Integer, Task> tasks = new HashMap<>();
-    protected final HashMap<Integer, Epic> epics = new HashMap<>();
-    protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    protected int nextId = 1;
-    protected final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected static final HashMap<Integer, Task> tasks = new HashMap<>();
+    protected static final HashMap<Integer, Epic> epics = new HashMap<>();
+    protected static final HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    protected static int nextId = 1;
+    protected static final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public HistoryManager getHistoryManager() {

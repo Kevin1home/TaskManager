@@ -8,17 +8,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class FileBackedTaskManager extends InMemoryTaskManager { // Логика сохранения в файл
 
-    Path path;
+    private final Path path;
 
     public FileBackedTaskManager(Path path) {
         this.path = path;
     }
 
-    public void save() { // Сохраняет текущее состояние менеджера в указанный файл
+    protected void save() { // Сохраняет текущее состояние менеджера в указанный файл
         try (FileWriter fileWriter = new FileWriter(String.valueOf(path))) {
             String firstLine = String.join(",", "id", "type", "name", "status",
                     "description", "epic\n");
@@ -43,14 +42,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
             }
             fileWriter.write("\n");
             fileWriter.write(historyToString(historyManager));
-        } catch (IOException exception){
-            // throw new ManagerSaveException("Ошибка записи в файл");
-            System.out.println("Ошибка записи в файл");
+        } catch (IOException exception) {
+            throw new ManagerSaveException("Ошибка записи в файл", exception);
         }
 
     }
 
-    public String toString(Task task) {
+    protected String toString(Task task) {
         if (task.getType().equals(TaskType.SUBTASK)) {
             Subtask subtask = (Subtask) task;
             return String.join(",", String.valueOf(task.getId()), String.valueOf(task.getType()), task.getName(),
@@ -62,16 +60,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
 
     public String historyToString(HistoryManager manager) {
         List<Task> history = manager.getHistory();
-        String[] historyIds = new String[10];
-        int index = 0;
+        List<String> historyIds = new ArrayList<>();
         for (Task task : history) {
-            historyIds[index] = String.valueOf(task.getId());
-            index++;
+            historyIds.add(String.valueOf(task.getId()));
         }
         return String.join(",", historyIds);
     }
 
-    public void addTaskFromFile (Task task) {
+    private static void addTaskFromFile(Task task) {
         switch (task.getType()) {
             case TASK:
                 tasks.put(task.getId(), task);
@@ -87,7 +83,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
         }
     }
 
-    public void addHistoryFromFile(String historyLine) {
+    private static void addHistoryFromFile(String historyLine) {
         String[] historyIds = historyLine.split(",");
         for (int i = historyIds.length - 1; i >= 0; i--) {
             if (!historyIds[i].equals("null")) {
@@ -105,7 +101,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
         }
     }
 
-    public void loadSaves() { // Загрузка сохранений при старте
+    public static FileBackedTaskManager loadFromFile(Path path) { // Загрузка сохранений при старте
         try {
             if (Files.size(path) != 0) {
                 List<String> lines = Files.readAllLines(path);
@@ -124,11 +120,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
                 addHistoryFromFile(historyLine);
             }
         } catch (IOException exception) {
-            System.out.println("Ошибка при загрузке данных");
+            throw new ManagerSaveException("Ошибка записи в файл", exception);
         }
+        return new FileBackedTaskManager(path);
     }
 
-    public Task fromString(String value) { // id,type,name,status,description,epic
+    public static Task fromString(String value) { // id,type,name,status,description,epic
         String[] taskValues = value.split(",");
         switch (taskValues[1]) {
             case "TASK":
