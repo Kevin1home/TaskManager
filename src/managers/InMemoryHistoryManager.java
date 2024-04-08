@@ -17,7 +17,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         private Node<Task> last;
 
         public void linkLast(Task task) { // Добавляет задачу в конец списка
-            //nodes.containsKey(task.getId())
             if (nodes.containsKey(task.getId())) {
                 removeNode(nodes.get(task.getId()));
             }
@@ -101,7 +100,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void remove(int id) {
         if (history.nodes.get(id) == null) {
-            System.out.println("Узла нет");
+            System.out.println("Узла для удаления задачи в истории нет");
             return;
         }
         history.removeNode(history.nodes.get(id));

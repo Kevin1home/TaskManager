@@ -9,7 +9,6 @@ public interface TaskManager {
 
     // Получить объект класса с интерфесом HistoryManager
     HistoryManager getHistoryManager();
-
     // Создать
     void createTask(Task task);
     void createEpic(Epic epic);
@@ -34,11 +33,6 @@ public interface TaskManager {
     Epic getEpicById(int id);
     Subtask getSubtaskById(int id);
 
-    // Получить ID по имени
-    int getUsualTaskIdByName(String taskName);
-    int getEpicIdByName(String epicName);
-    int getSubtaskIdByName(String subtaskName);
-
     // Получить списки задач по типу
     HashMap<Integer, Task> getTasks();
     HashMap<Integer, Epic> getEpics();
@@ -50,11 +44,11 @@ public interface TaskManager {
     void deleteSubtaskById(int id);
 
     // Удалить все задачи конретного типа
-    void deleteAllTasksAllTypes();
     void deleteAllUsualTasks();
     void deleteAllEpics();
+    void deleteAllSubtasks();
 
     // Удалить все задачи
-    void deleteAllSubtasks() ;
+    void deleteAllTasksAllTypes();
 
 }
