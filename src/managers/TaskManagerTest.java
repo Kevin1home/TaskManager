@@ -371,10 +371,9 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.deleteTaskById(task.getId()); // -1 Task
         HashMap<Integer, Task> tasks = taskManager.getTasks();
 
-        Boolean listIsEmptyExpected = true;
-        Boolean listIsEmptyActual = tasks.isEmpty();
+        boolean listIsEmpty = tasks.isEmpty();
 
-        Assertions.assertEquals(listIsEmptyExpected, listIsEmptyActual);
+        Assertions.assertTrue(listIsEmpty);
     }
 
     @Test
@@ -396,10 +395,9 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.deleteEpicById(epic.getId()); // -1 Epic
         HashMap<Integer, Epic> epics = taskManager.getEpics();
 
-        Boolean listIsEmptyExpected = true;
-        Boolean listIsEmptyActual = epics.isEmpty();
+        boolean listIsEmpty = epics.isEmpty();
 
-        Assertions.assertEquals(listIsEmptyExpected, listIsEmptyActual);
+        Assertions.assertTrue(listIsEmpty);
     }
 
     @Test
@@ -423,10 +421,9 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.deleteSubtaskById(subtask.getId()); // -1 Subtask
         HashMap<Integer, Subtask> subtasks = taskManager.getSubtasks();
 
-        Boolean listIsEmptyExpected = true;
-        Boolean listIsEmptyActual = subtasks.isEmpty();
+        boolean listIsEmpty = subtasks.isEmpty();
 
-        Assertions.assertEquals(listIsEmptyExpected, listIsEmptyActual);
+        Assertions.assertTrue(listIsEmpty);
     }
 
     @Test
@@ -451,10 +448,9 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.deleteAllUsualTasks(); // -2 Tasks
         HashMap<Integer, Task> tasks = taskManager.getTasks();
 
-        Boolean listIsEmptyExpected = true;
-        Boolean listIsEmptyActual = tasks.isEmpty();
+        boolean listIsEmpty = tasks.isEmpty();
 
-        Assertions.assertEquals(listIsEmptyExpected, listIsEmptyActual);
+        Assertions.assertTrue(listIsEmpty);
     }
 
     @Test
@@ -464,10 +460,9 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.deleteAllEpics(); // -2 Epics
         HashMap<Integer, Epic> epics = taskManager.getEpics();
 
-        Boolean listIsEmptyExpected = true;
-        Boolean listIsEmptyActual = epics.isEmpty();
+        boolean listIsEmpty = epics.isEmpty();
 
-        Assertions.assertEquals(listIsEmptyExpected, listIsEmptyActual);
+        Assertions.assertTrue(listIsEmpty);;
     }
 
     @Test
@@ -479,10 +474,9 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.deleteAllSubtasks(); // -2 Subtasks
         HashMap<Integer, Subtask> subtasks = taskManager.getSubtasks();
 
-        Boolean listIsEmptyExpected = true;
-        Boolean listIsEmptyActual = subtasks.isEmpty();
+        boolean listIsEmpty = subtasks.isEmpty();
 
-        Assertions.assertEquals(listIsEmptyExpected, listIsEmptyActual);
+        Assertions.assertTrue(listIsEmpty);;
     }
 
     @Test
@@ -496,10 +490,9 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         HashMap<Integer, Epic> epics = taskManager.getEpics();
         HashMap<Integer, Subtask> subtasks = taskManager.getSubtasks();
 
-        Boolean listsAreEmptyExpected = true;
-        Boolean listsAreEmptyActual = tasks.isEmpty() && epics.isEmpty() && subtasks.isEmpty();
+        boolean listIsEmpty = tasks.isEmpty() && epics.isEmpty() && subtasks.isEmpty();
 
-        Assertions.assertEquals(listsAreEmptyExpected, listsAreEmptyActual);
+        Assertions.assertTrue(listIsEmpty);;
     }
 
 }

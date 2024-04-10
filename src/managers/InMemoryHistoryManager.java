@@ -100,7 +100,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void remove(int id) {
         if (history.nodes.get(id) == null) {
-            System.out.println("Узла для удаления задачи в истории нет");
+            System.out.println("Узла нет");
             return;
         }
         history.removeNode(history.nodes.get(id));

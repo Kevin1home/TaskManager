@@ -1,10 +1,9 @@
 package tasks;
 
 import main_manager.Managers;
+import managers.InMemoryHistoryManager;
 import managers.TaskManager;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 class EpicTest {
 
@@ -14,9 +13,15 @@ class EpicTest {
     @BeforeEach
     void beforeEach() {
         taskManager = Managers.getDefaultWithoutSaving();
-        // Create 1x Epic without Subtasks
-        epic = new Epic("Epic", "DescrEp");
+        epic = new Epic("Epic", "DescrEp"); // Create 1x Epic without Subtasks
         taskManager.createEpic(epic);
+    }
+
+    @AfterEach
+    void afterEach() {
+        taskManager.deleteAllTasksAllTypes();
+        taskManager.setNextId(1);
+        taskManager.setHistoryManager(new InMemoryHistoryManager());
     }
 
     @Test

@@ -6,6 +6,8 @@ public class Main {
     public static void main(String[] args) {
 
 
+/*
+
         System.out.println("ТЕСТИРОВАНИЕ (сохранение, 1 часть)");
 
         TaskManager fileBackedTaskManager = Managers.getDefault();
@@ -221,13 +223,27 @@ public class Main {
         }
         System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
 
-/*
+
+*/
+
+
+
+
+
         System.out.println("ТЕСТИРОВАНИЕ (сохранение, 2 часть)");
         TaskManager fileBackedTaskManager = Managers.getDefault();
         System.out.println(fileBackedTaskManager);
         System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
 
-        */
+        fileBackedTaskManager.createTask(new Task("Task1", "DescrT1", TaskStatus.NEW));
+
+
+        System.out.println(fileBackedTaskManager);
+        System.out.println(fileBackedTaskManager.getHistoryManager().getHistory());
+
+
+
+
     }
 
 }

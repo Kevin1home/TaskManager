@@ -1,11 +1,8 @@
 package managers;
 
-import java.io.EOFException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import main_manager.Managers;
 import tasks.*;
@@ -243,5 +240,13 @@ public class InMemoryTaskManager implements TaskManager {
                 ", " + "\n" + "subtasks=" + subtasks +
                 '}';
     }
+    @Override
+    public void setNextId(int nextId) {
+        InMemoryTaskManager.nextId = nextId;
+    }
 
+    @Override
+    public void setHistoryManager(HistoryManager historyManager) {
+        InMemoryTaskManager.historyManager = historyManager;
+    }
 }

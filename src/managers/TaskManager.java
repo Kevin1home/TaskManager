@@ -51,4 +51,8 @@ public interface TaskManager {
     // Удалить все задачи
     void deleteAllTasksAllTypes();
 
+    // Setters
+    void setNextId(int nextId);
+    void setHistoryManager(HistoryManager historyManager);
+
 }

@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class FileBackedTaskManager extends InMemoryTaskManager { // Логика сохранения в файл
 
@@ -42,7 +41,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
                 }
             }
             fileWriter.write("\n");
-            fileWriter.write(historyToString(historyManager));
+            if (!historyManager.getHistory().isEmpty()) {
+                fileWriter.write(historyToString(historyManager));
+            } else {
+                fileWriter.write("\n");
+            }
+
         } catch (IOException exception) {
             throw new ManagerSaveException("Ошибка записи в файл", exception);
         }
@@ -85,18 +89,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
     }
 
     private static void addHistoryFromFile(String historyLine) {
-        String[] historyIds = historyLine.split(",");
-        for (int i = historyIds.length - 1; i >= 0; i--) {
-            if (!historyIds[i].equals("null")) {
-                int historyId = Integer.parseInt(historyIds[i]);
-                if (tasks.containsKey(historyId)) {
-                    historyManager.add(tasks.get(historyId));
-                } else if (epics.containsKey(historyId)) {
-                    historyManager.add(epics.get(historyId));
-                } else if (subtasks.containsKey(historyId)) {
-                    historyManager.add(subtasks.get(historyId));
-                } else {
-                    System.out.println("История не записана");
+        if (!historyLine.isEmpty()) {
+            String[] historyIds = historyLine.split(",");
+            for (int i = historyIds.length - 1; i >= 0; i--) {
+                if (!historyIds[i].equals("null")) {
+                    int historyId = Integer.parseInt(historyIds[i]);
+                    if (tasks.containsKey(historyId)) {
+                        historyManager.add(tasks.get(historyId));
+                    } else if (epics.containsKey(historyId)) {
+                        historyManager.add(epics.get(historyId));
+                    } else if (subtasks.containsKey(historyId)) {
+                        historyManager.add(subtasks.get(historyId));
+                    } else {
+                        System.out.println("История не записана");
+                    }
                 }
             }
         }
