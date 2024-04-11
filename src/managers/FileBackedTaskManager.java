@@ -176,6 +176,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
         epic.subtasks.add(subtask);
         subtasks.put(subtask.getId(), subtask);
         checkStatusEpic(epic);
+        epic.checkDataTimeDurationEpic();
         save();
     }
 
@@ -188,8 +189,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
 
     @Override
     public void updateEpic(Epic epic, int id) { // Новые данные в существующий ID
+        ArrayList<Subtask> savedSubtasks = getEpicById(id).subtasks;
         epics.replace(id, epic);
         epic.setId(id);
+        for (Subtask subtask : savedSubtasks) {
+            getEpicById(id).subtasks.add(subtask);
+        }
+        checkStatusEpic(epic);
+        epic.checkDataTimeDurationEpic();
         save();
     }
 
@@ -204,6 +211,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
         subtasks.replace(id, subtask);
         subtask.setId(id);
         checkStatusEpic(epic);
+        epic.checkDataTimeDurationEpic();
         save();
     }
 
@@ -276,6 +284,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
         subtasks.remove(id);
         historyManager.remove(id);
         checkStatusEpic(epic);
+        epic.checkDataTimeDurationEpic();
         save();
     }
 
@@ -316,6 +325,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
         for (Epic epic : epics.values()) {
             epic.subtasks.clear();
             checkStatusEpic(epic);
+            epic.checkDataTimeDurationEpic();
         }
         save();
     }

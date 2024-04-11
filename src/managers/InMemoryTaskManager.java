@@ -41,6 +41,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.subtasks.add(subtask);
         subtasks.put(subtask.getId(), subtask);
         checkStatusEpic(epic);
+        epic.checkDataTimeDurationEpic();
     }
 
     @Override
@@ -88,8 +89,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(Epic epic, int id) { // Новые данные в существующий ID
+        ArrayList<Subtask> savedSubtasks = getEpicById(id).subtasks;
         epics.replace(id, epic);
         epic.setId(id);
+        for (Subtask subtask : savedSubtasks) {
+            getEpicById(id).subtasks.add(subtask);
+        }
+        checkStatusEpic(epic);
+        epic.checkDataTimeDurationEpic();
     }
 
     @Override
@@ -103,6 +110,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.replace(id, subtask);
         subtask.setId(id);
         checkStatusEpic(epic);
+        epic.checkDataTimeDurationEpic();
     }
 
     @Override
@@ -186,6 +194,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.remove(id);
         historyManager.remove(id);
         checkStatusEpic(epic);
+        epic.checkDataTimeDurationEpic();
     }
 
     @Override
@@ -223,6 +232,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Epic epic : epics.values()) {
             epic.subtasks.clear();
             checkStatusEpic(epic);
+            epic.checkDataTimeDurationEpic();
         }
     }
 

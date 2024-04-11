@@ -203,6 +203,24 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         Assertions.assertEquals(expectedDescription, actualDescription);
     }
 
+    // FALSE !!!
+    @Test
+    protected void shouldReturnSubtasksByUpdatingEpic() {
+        taskManager.createEpic(epic);
+        subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
+        taskManager.createSubtask(subtask);
+        Subtask subtask1 = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
+        taskManager.createSubtask(subtask1);
+
+        int expectedSizeOfSubtasks = 2;
+        Epic updatedEpicData = new Epic("Epic1", "NewEpicDescrEp");
+        taskManager.updateEpic(updatedEpicData, epic.getId());
+        int actualSizeOfSubtasks = taskManager.getEpics().get(epic.getId()).subtasks.size();
+
+        Assertions.assertEquals(expectedSizeOfSubtasks, actualSizeOfSubtasks);
+
+    }
+
     @Test
     protected void shouldReturnCorrectedNameOfChosenSubtask() { //checking method updateSubtask(Subtask subtask, int id)
         taskManager.createEpic(epic);

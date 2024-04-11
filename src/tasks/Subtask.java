@@ -9,6 +9,18 @@ public class Subtask extends Task {
         this.type = TaskType.SUBTASK;
     }
 
+    public Subtask(String name, String description, int idEpic) {
+        super(name, description);
+        this.idEpic = idEpic;
+        this.type = TaskType.SUBTASK;
+    }
+
+    public Subtask(String name, String description, int idEpic, String startTime, long durationMinutes) {
+        super(name, description, startTime, durationMinutes);
+        this.idEpic = idEpic;
+        this.type = TaskType.SUBTASK;
+    }
+
     @Override
     public String toString() {
         return "tasks.Subtask{" +
