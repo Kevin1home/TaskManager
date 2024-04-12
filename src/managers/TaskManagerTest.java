@@ -111,7 +111,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     }
 
     @Test
-    protected void shouldThrowExceptionByCreatingSubtaskWithIncorrectEpicId() { //checking method createSubtask(Sb sb, int id)
+    protected void shouldThrowExceptionByCreatingSubtaskWithIncorrectEpicId() { // checking createSubtask(Sb sb, int id)
         subtask = new Subtask("Subtask2", "DescrSt2",
                 TaskStatus.NEW, 33);
 
@@ -264,7 +264,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     }
 
     @Test
-    protected void shouldThrowExceptionByUpdatingSubtaskWithIncorrectEpicId() { //checking method updateSubtask(Sb sb, int id)
+    protected void shouldThrowExceptionByUpdatingSubtaskWithIncorrectEpicId() { //checking updateSubtask(Sb sb, int id)
         taskManager.createEpic(epic);
         subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
         taskManager.createSubtask(subtask);

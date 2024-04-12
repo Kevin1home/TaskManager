@@ -78,9 +78,11 @@ public class InMemoryTaskManager implements TaskManager {
                 statuses.add(TaskStatus.DONE);
             }
         }
-        if (statuses.contains(TaskStatus.NEW) && !(statuses.contains(TaskStatus.IN_PROGRESS)) && !(statuses.contains(TaskStatus.DONE))) {
+        if (statuses.contains(TaskStatus.NEW) && !(statuses.contains(TaskStatus.IN_PROGRESS))
+                && !(statuses.contains(TaskStatus.DONE))) {
             epic.setStatus(TaskStatus.NEW);
-        } else if (!(statuses.contains(TaskStatus.NEW)) && !(statuses.contains(TaskStatus.IN_PROGRESS)) && statuses.contains(TaskStatus.DONE)) {
+        } else if (!(statuses.contains(TaskStatus.NEW)) && !(statuses.contains(TaskStatus.IN_PROGRESS))
+                && statuses.contains(TaskStatus.DONE)) {
             epic.setStatus(TaskStatus.DONE);
         } else {
             epic.setStatus(TaskStatus.IN_PROGRESS);
@@ -109,7 +111,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubtask(Subtask subtask, int id) throws IllegalArgumentException { // Новые данные в существующий ID
+    public void updateSubtask(Subtask subtask, int id) throws IllegalArgumentException {//Новые данные в существующий ID
         if (!epics.containsKey(subtask.getIdEpic())) {
             throw new IllegalArgumentException("Epic with such ID does not exist");
         }

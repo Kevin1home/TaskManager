@@ -143,7 +143,7 @@ class EpicTest {
     }
 
     @Test
-    protected void shouldReturnStartTimeByEpicWithSubtaskWithoutDateTimeParameters() { // checking method checkStartTimeEpic()
+    protected void shouldReturnStartTimeByEpicWithSubtaskWithoutDateTimeParameters() { // checking checkStartTimeEpic()
         Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
                 "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
@@ -164,7 +164,7 @@ class EpicTest {
     }
 
     @Test
-    protected void shouldReturnStartTimeNullByEpicWithSubtaskWithNullDateTimeParameters() { // checking method checkStartTimeEpic()
+    protected void shouldReturnStartTimeNullByEpicWithSubtaskWithNullDateTimeParameters() { // checkStartTimeEpic()
         Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
                 null, 60L, epic.getId());
         taskManager.createSubtask(subtask1);
@@ -229,7 +229,7 @@ class EpicTest {
     }
 
     @Test
-    protected void shouldReturnDurationByEpicWithSubtaskWithNegativeDuratioAndNormalDuration() { // checking method checkDurationEpic()
+    protected void shouldReturnDurationByEpicWithSubtaskWithNegativeDuratioAndNormalDuration() { // checkDurationEpic()
         Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
                 "02.06.2024, 13:30", -60L, epic.getId());
         taskManager.createSubtask(subtask1);
@@ -295,7 +295,7 @@ class EpicTest {
     }
 
     @Test
-    protected void shouldReturnEndTimeByEpicWithSubtaskWithoutDateTimeParameters() { // checking method checkEndTimeEpic()
+    protected void shouldReturnEndTimeByEpicWithSubtaskWithoutDateTimeParameters() { // checking checkEndTimeEpic()
         Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
                 "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
@@ -316,7 +316,7 @@ class EpicTest {
     }
 
     @Test
-    protected void shouldReturnEndTimeNullByEpicWithSubtaskWithNullDateTimeParameters() { // checking method checkEndTimeEpic()
+    protected void shouldReturnEndTimeNullByEpicWithSubtaskWithNullDateTimeParameters() { // checking checkEndTimeEpic()
         Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
                 null, 60L, epic.getId());
         taskManager.createSubtask(subtask1);

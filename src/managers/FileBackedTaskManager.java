@@ -251,7 +251,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
     }
 
     @Override
-    public void updateSubtask(Subtask subtask, int id) throws IllegalArgumentException { // Новые данные в существующий ID
+    public void updateSubtask(Subtask subtask, int id) throws IllegalArgumentException {//Новые данные в существующий ID
         if (!epics.containsKey(subtask.getIdEpic())) {
             throw new IllegalArgumentException("Epic with such ID does not exist");
         }
