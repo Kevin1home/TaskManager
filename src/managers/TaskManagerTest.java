@@ -7,6 +7,7 @@ import tasks.TaskStatus;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of interface TaskManager
 
@@ -203,7 +204,6 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         Assertions.assertEquals(expectedDescription, actualDescription);
     }
 
-    // FALSE !!!
     @Test
     protected void shouldReturnSubtasksByUpdatingEpic() {
         taskManager.createEpic(epic);
@@ -382,6 +382,58 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         Assertions.assertEquals(expectedSubtask, actualSubtask);
     }
+
+    @Test
+    protected void shouldReturnSortedSetOfTasksByPriority() { // checking method getPrioritizedTasks();
+        taskManager.createTask(task); // +1 Task without DateTimeParameters
+        Task taskP = new Task("Task", "DescrT", TaskStatus.NEW,
+                "02.06.2024, 09:30", 60L);
+        taskManager.createTask(taskP); // +1 Task with DateTimeParameters
+        taskManager.createEpic(epic); // +0 Epic (will not get to prioritizedTasks list)
+        subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
+                "02.06.2024, 12:30", 120L, epic.getId());
+        taskManager.createSubtask(subtask); // +1 Subtask with DateTimeParameters
+        Subtask subtaskP = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
+                "01.05.2024, 09:30", 80L, epic.getId());
+        taskManager.createSubtask(subtaskP); // +1 Subtask with DateTimeParameters
+
+        TreeSet<Task> prioritizedTasks = taskManager.getPrioritizedTasks();
+
+        boolean priorityIsTrue = prioritizedTasks.first().equals(subtaskP) && prioritizedTasks.last().equals(task)
+                && prioritizedTasks.size() == 4;
+
+        Assertions.assertTrue(priorityIsTrue);
+
+    }
+
+    @Test
+    protected void shouldNotCreateTasksWithWrongDateTimeValidation() { // checking method isValidDateTime();
+        taskManager.createTask(task); // +1 Task without DateTimeParameters
+        Task taskP = new Task("Task", "DescrT", TaskStatus.NEW,
+                "02.06.2024, 09:30", 60L);
+        taskManager.createTask(taskP); // +1 Task with right DateTimeParameters
+        taskManager.createEpic(epic); // +1 Epic
+        subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
+                "06.06.2024, 12:30", 120L, epic.getId());
+        taskManager.createSubtask(subtask); // +1 Subtask with right DateTimeParameters
+        Task taskWrong = new Task("Task", "DescrT", TaskStatus.NEW,
+                "10.06.2024, 09:30", -100L);
+        taskManager.createTask(taskWrong); // +1 Task with wrong Duration (-100 => 0)
+        Subtask subtaskP = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
+                "06.06.2024, 13:30", 80L, epic.getId());
+        taskManager.createSubtask(subtaskP); // +0 Subtask with wrong startTime
+        Subtask subtaskWrong = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
+                "06.06.2024, 11:30", 180L, epic.getId());
+        taskManager.createSubtask(subtaskWrong); // +0 Subtask with wrong endTime
+
+        int expectedSize = 5;
+        int actualSize = taskManager.getTasks().size() + taskManager.getSubtasks().size()
+                + taskManager.getEpics().size();
+
+        Assertions.assertEquals(expectedSize, actualSize);
+
+    }
+
 
     @Test
     protected void shouldReturnEmptyListAfterDeleting1Task() { // checking method deleteTaskById(int id)

@@ -195,6 +195,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
 
     @Override
     public void createTask(Task task) {
+        if (!isValidDateTime(task)) {
+            return;
+        }
         task.setId(generateId()); // создать новый ID и поменять
         tasks.put(task.getId(), task);
         save();
@@ -202,6 +205,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
 
     @Override
     public void createEpic(Epic epic) {
+        if (!isValidDateTime(epic)) {
+            return;
+        }
         epic.setId(generateId()); // создать новый ID и поменять
         epics.put(epic.getId(), epic);
         save();
@@ -209,6 +215,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
 
     @Override
     public void createSubtask(Subtask subtask) throws IllegalArgumentException {
+        if (!isValidDateTime(subtask)) {
+            return;
+        }
         if (!epics.containsKey(subtask.getIdEpic())) {
             throw new IllegalArgumentException("Epic with such ID does not exist");
         }

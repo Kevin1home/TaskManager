@@ -1,8 +1,8 @@
 package managers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import main_manager.Managers;
 import tasks.*;
@@ -21,18 +21,27 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void createTask(Task task) {
+        if (!isValidDateTime(task)) {
+            return;
+        }
         task.setId(generateId()); // создать новый ID и поменять
         tasks.put(task.getId(), task);
     }
 
     @Override
     public void createEpic(Epic epic) {
+        if (!isValidDateTime(epic)) {
+            return;
+        }
         epic.setId(generateId()); // создать новый ID и поменять
         epics.put(epic.getId(), epic);
     }
 
     @Override
     public void createSubtask(Subtask subtask) {
+        if (!isValidDateTime(subtask)) {
+            return;
+        }
         if (!epics.containsKey(subtask.getIdEpic())) {
             throw new IllegalArgumentException("Epic with such ID does not exist");
         }
@@ -153,6 +162,71 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public HashMap<Integer, Subtask> getSubtasks() {
         return subtasks;
+    }
+
+    @Override
+    public TreeSet<Task> getPrioritizedTasks() {
+        TreeSet<Task> prioritizedTasks = new TreeSet<>( (t1, t2) -> {
+            if (t1.getStartTime().isPresent() && t2.getStartTime().isPresent()) {
+                if (t1.getStartTime().get().getYear() == t2.getStartTime().get().getYear()) {
+                    if (t1.getStartTime().get().getMonthValue() == t2.getStartTime().get().getMonthValue()) {
+                        if (t1.getStartTime().get().getDayOfMonth() == t2.getStartTime().get().getDayOfMonth()) {
+                            if (t1.getStartTime().get().getHour() == t2.getStartTime().get().getHour()) {
+                                if (t1.getStartTime().get().getMinute() == t2.getStartTime().get().getMinute()) {
+                                    return -1;
+                                }
+                                return t1.getStartTime().get().getMinute() - t2.getStartTime().get().getMinute();
+                            }
+                            return t1.getStartTime().get().getHour() - t2.getStartTime().get().getHour();
+                        }
+                        return t1.getStartTime().get().getDayOfMonth() - t2.getStartTime().get().getDayOfMonth();
+                    }
+                    return t1.getStartTime().get().getMonthValue() - t2.getStartTime().get().getMonthValue();
+                }
+                return t1.getStartTime().get().getYear() - t2.getStartTime().get().getYear();
+            } else {
+                return -1;
+            }
+        });
+        prioritizedTasks.addAll(tasks.values());
+        prioritizedTasks.addAll(subtasks.values());
+        return prioritizedTasks;
+    }
+
+    @Override
+    public boolean isValidDateTime(Task provedTask) {
+        if (provedTask.getStartTime().isPresent() && provedTask.getDuration().isPresent()
+                && provedTask.getEndTime().isPresent()) {
+            LocalDateTime provedTaskStartTime = provedTask.getStartTime().get();
+            LocalDateTime provedTaskEndTime = provedTask.getEndTime().get();
+            Duration provedTaskDuration = provedTask.getDuration().get();
+
+            if (!((provedTaskStartTime.isBefore(LocalDateTime.MIN)
+                    && provedTaskStartTime.isAfter(LocalDateTime.MAX) && provedTaskEndTime.isBefore(LocalDateTime.MIN)
+                    && provedTaskEndTime.isAfter(LocalDateTime.MAX)) || provedTaskDuration.isNegative())) {
+
+                TreeSet<Task> prioritizedTasks = getPrioritizedTasks();
+
+                for (Task task : prioritizedTasks) {
+
+                    if (task.getStartTime().isPresent() && task.getDuration().isPresent()
+                            && task.getEndTime().isPresent()) {
+                        LocalDateTime taskStartTime = task.getStartTime().get();
+                        LocalDateTime taskEndTime = task.getEndTime().get();
+
+                        if (!((provedTaskStartTime.isBefore(taskStartTime)
+                                && provedTaskEndTime.isBefore(taskStartTime))
+                                    || (provedTaskStartTime.isAfter(taskEndTime)
+                                        && provedTaskEndTime.isAfter(taskEndTime)))) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 
     @Override

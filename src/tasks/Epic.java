@@ -70,19 +70,27 @@ public class Epic extends Task {
                     .sorted( (st1, st2) -> {
                         if (st1.getStartTime().isPresent() && st2.getStartTime().isPresent()) {
                             if (st1.getStartTime().get().getYear() == st2.getStartTime().get().getYear()) {
-                                if (st1.getStartTime().get().getMonthValue() == st2.getStartTime().get().getMonthValue()) {
-                                    if (st1.getStartTime().get().getDayOfMonth() == st2.getStartTime().get().getDayOfMonth()) {
-                                        if (st1.getStartTime().get().getHour() == st2.getStartTime().get().getHour()) {
-                                            if (st1.getStartTime().get().getMinute() == st2.getStartTime().get().getMinute()) {
+                                if (st1.getStartTime().get().getMonthValue() == st2.getStartTime().get()
+                                        .getMonthValue()) {
+                                    if (st1.getStartTime().get().getDayOfMonth() == st2.getStartTime().get()
+                                            .getDayOfMonth()) {
+                                        if (st1.getStartTime().get().getHour() == st2.getStartTime().get()
+                                                .getHour()) {
+                                            if (st1.getStartTime().get().getMinute() == st2.getStartTime().get()
+                                                    .getMinute()) {
                                                 return 0;
                                             }
-                                            return st1.getStartTime().get().getMinute() - st2.getStartTime().get().getMinute();
+                                            return st1.getStartTime().get().getMinute() - st2.getStartTime().get()
+                                                    .getMinute();
                                         }
-                                        return st1.getStartTime().get().getHour() - st2.getStartTime().get().getHour();
+                                        return st1.getStartTime().get().getHour() - st2.getStartTime().get()
+                                                .getHour();
                                     }
-                                    return st1.getStartTime().get().getDayOfMonth() - st2.getStartTime().get().getDayOfMonth();
+                                    return st1.getStartTime().get().getDayOfMonth() - st2.getStartTime().get()
+                                            .getDayOfMonth();
                                 }
-                                return st1.getStartTime().get().getMonthValue() - st2.getStartTime().get().getMonthValue();
+                                return st1.getStartTime().get().getMonthValue() - st2.getStartTime().get()
+                                        .getMonthValue();
                             }
                             return st1.getStartTime().get().getYear() - st2.getStartTime().get().getYear();
                         } else {
@@ -108,19 +116,27 @@ public class Epic extends Task {
                     .sorted( (st1, st2) -> {
                         if (st2.getEndTime().isPresent() && st1.getEndTime().isPresent()) {
                             if (st2.getEndTime().get().getYear() == st1.getEndTime().get().getYear()) {
-                                if (st2.getEndTime().get().getMonthValue() == st1.getEndTime().get().getMonthValue()) {
-                                    if (st2.getEndTime().get().getDayOfMonth() == st1.getEndTime().get().getDayOfMonth()) {
-                                        if (st2.getEndTime().get().getHour() == st1.getEndTime().get().getHour()) {
-                                            if (st2.getEndTime().get().getMinute() == st1.getEndTime().get().getMinute()) {
+                                if (st2.getEndTime().get().getMonthValue() == st1.getEndTime().get()
+                                        .getMonthValue()) {
+                                    if (st2.getEndTime().get().getDayOfMonth() == st1.getEndTime().get()
+                                            .getDayOfMonth()) {
+                                        if (st2.getEndTime().get().getHour() == st1.getEndTime().get()
+                                                .getHour()) {
+                                            if (st2.getEndTime().get().getMinute() == st1.getEndTime().get()
+                                                    .getMinute()) {
                                                 return 0;
                                             }
-                                            return st2.getEndTime().get().getMinute() - st1.getEndTime().get().getMinute();
+                                            return st2.getEndTime().get().getMinute() - st1.getEndTime().get()
+                                                    .getMinute();
                                         }
-                                        return st2.getEndTime().get().getHour() - st1.getEndTime().get().getHour();
+                                        return st2.getEndTime().get().getHour() - st1.getEndTime().get()
+                                                .getHour();
                                     }
-                                    return st2.getEndTime().get().getDayOfMonth() - st1.getEndTime().get().getDayOfMonth();
+                                    return st2.getEndTime().get().getDayOfMonth() - st1.getEndTime().get()
+                                            .getDayOfMonth();
                                 }
-                                return st2.getEndTime().get().getMonthValue() - st1.getEndTime().get().getMonthValue();
+                                return st2.getEndTime().get().getMonthValue() - st1.getEndTime().get()
+                                        .getMonthValue();
                             }
                             return st2.getEndTime().get().getYear() - st1.getEndTime().get().getYear();
                         } else {

@@ -1,6 +1,8 @@
 package managers;
 
 import java.util.HashMap;
+import java.util.TreeSet;
+
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -9,6 +11,7 @@ public interface TaskManager {
 
     // Получить объект класса с интерфесом HistoryManager
     HistoryManager getHistoryManager();
+
     // Создать
     void createTask(Task task);
     void createEpic(Epic epic);
@@ -37,6 +40,11 @@ public interface TaskManager {
     HashMap<Integer, Task> getTasks();
     HashMap<Integer, Epic> getEpics();
     HashMap<Integer, Subtask> getSubtasks();
+
+    // Получить список задач по приоритету
+    TreeSet<Task> getPrioritizedTasks();
+    // Проверка на приоритетность
+    boolean isValidDateTime(Task task);
 
     // Удалить задачу по ID
     void deleteTaskById(int id);

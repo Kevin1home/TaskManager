@@ -116,7 +116,7 @@ public class Task {
         if (newDuration >= 0) {
             this.duration = Duration.ofMinutes(newDuration);
         } else {
-            this.duration = null;
+            this.duration = Duration.ofMinutes(0);
         }
     }
 
