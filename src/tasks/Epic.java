@@ -14,9 +14,17 @@ public class Epic extends Task {
     public Epic(String name, String description) {
         super(name, description);
         this.type = TaskType.EPIC;
-        this.startTime = null;
-        this.duration = null;
-        this.endTime = null;
+        checkStartTimeEpic();
+        checkDurationEpic();
+        checkEndTimeEpic();
+    }
+
+    public Epic(String name, String description, TaskStatus status) {
+        super(name, description, status);
+        this.type = TaskType.EPIC;
+        checkStartTimeEpic();
+        checkDurationEpic();
+        checkEndTimeEpic();
     }
 
     public Optional<LocalDateTime> getEndTime(){

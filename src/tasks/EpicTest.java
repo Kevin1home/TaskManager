@@ -100,8 +100,8 @@ class EpicTest {
 
     @Test
     protected void shouldReturnStartTimeByEpicAsBySubtask() { // checking method checkStartTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "01.06.2024, 09:30", 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         epic.checkStartTimeEpic();
 
@@ -119,14 +119,14 @@ class EpicTest {
 
     @Test
     protected void shouldReturnEarliestStartTimeByEpic() { // checking method checkStartTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "02.06.2024, 13:30", 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "02.06.2024, 13:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId(),
-                "02.06.2024, 10:30", 80L);
+        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2",
+                "02.06.2024, 10:30", 80L, epic.getId());
         taskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2", epic.getId(),
-                "01.06.2024, 09:30", 120L);
+        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2",
+                "01.06.2024, 09:30", 120L, epic.getId());
         taskManager.createSubtask(subtask3);
         epic.checkStartTimeEpic();
 
@@ -144,8 +144,8 @@ class EpicTest {
 
     @Test
     protected void shouldReturnStartTimeByEpicWithSubtaskWithoutDateTimeParameters() { // checking method checkStartTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "01.06.2024, 09:30", 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId());
         taskManager.createSubtask(subtask2);
@@ -165,8 +165,8 @@ class EpicTest {
 
     @Test
     protected void shouldReturnStartTimeNullByEpicWithSubtaskWithNullDateTimeParameters() { // checking method checkStartTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                null, 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                null, 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId());
         taskManager.createSubtask(subtask2);
@@ -186,14 +186,14 @@ class EpicTest {
 
     @Test
     protected void shouldReturnDurationByEpicWithSubtasks() { // checking method checkDurationEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "02.06.2024, 13:30", 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "02.06.2024, 13:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId(),
-                "02.06.2024, 10:30", 80L);
+        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2",
+                "02.06.2024, 10:30", 80L, epic.getId());
         taskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2", epic.getId(),
-                "01.06.2024, 09:30", 120L);
+        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2",
+                "01.06.2024, 09:30", 120L, epic.getId());
         taskManager.createSubtask(subtask3);
         epic.checkDurationEpic();
 
@@ -211,8 +211,8 @@ class EpicTest {
 
     @Test
     protected void shouldReturnDuration0ByEpicWithSubtaskWithNegativeDuration() { // checking method checkDurationEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "02.06.2024, 13:30", -60);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "02.06.2024, 13:30", -60, epic.getId());
         taskManager.createSubtask(subtask1);
         epic.checkDurationEpic();
 
@@ -230,11 +230,11 @@ class EpicTest {
 
     @Test
     protected void shouldReturnDurationByEpicWithSubtaskWithNegativeDuratioAndNormalDuration() { // checking method checkDurationEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "02.06.2024, 13:30", -60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "02.06.2024, 13:30", -60L, epic.getId());
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId(),
-                "02.06.2024, 10:30", 80L);
+        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2",
+                "02.06.2024, 10:30", 80L, epic.getId());
         taskManager.createSubtask(subtask2);
         epic.checkDurationEpic();
 
@@ -252,8 +252,8 @@ class EpicTest {
 
     @Test
     protected void shouldReturnEndTimeByEpicAsBySubtask() { // checking method checkEndTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "01.06.2024, 09:30", 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         epic.checkEndTimeEpic();
 
@@ -271,14 +271,14 @@ class EpicTest {
 
     @Test
     protected void shouldReturnLatestEndTimeByEpic() { // checking method checkEndTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "01.06.2024, 09:30", 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId(),
-                "02.06.2024, 10:30", 80L);
+        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2",
+                "02.06.2024, 10:30", 80L, epic.getId());
         taskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2", epic.getId(),
-                "02.06.2024, 13:30", 120L);
+        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2",
+                "02.06.2024, 13:30", 120L, epic.getId());
         taskManager.createSubtask(subtask3);
         epic.checkEndTimeEpic();
 
@@ -296,8 +296,8 @@ class EpicTest {
 
     @Test
     protected void shouldReturnEndTimeByEpicWithSubtaskWithoutDateTimeParameters() { // checking method checkEndTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                "01.06.2024, 09:30", 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId());
         taskManager.createSubtask(subtask2);
@@ -317,8 +317,8 @@ class EpicTest {
 
     @Test
     protected void shouldReturnEndTimeNullByEpicWithSubtaskWithNullDateTimeParameters() { // checking method checkEndTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", epic.getId(),
-                null, 60L);
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
+                null, 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId());
         taskManager.createSubtask(subtask2);

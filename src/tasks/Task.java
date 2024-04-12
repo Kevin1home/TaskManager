@@ -13,7 +13,7 @@ public class Task {
     protected TaskType type;
     protected LocalDateTime startTime;
     protected Duration duration;
-    protected static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+    public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
 
     public Task(String name, String description, TaskStatus status) {
         this.name = name;
@@ -40,8 +40,17 @@ public class Task {
         this.type = TaskType.TASK;
         setStartTime(startTime);
         setDuration(durationMinutes);
-
     }
+
+    public Task(String name, String description, TaskStatus status, String startTime, long durationMinutes) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.type = TaskType.TASK;
+        setStartTime(startTime);
+        setDuration(durationMinutes);
+    }
+
 
     @Override
     public String toString() {

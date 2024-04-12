@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileBackedTaskManager extends InMemoryTaskManager { // Логика сохранения в файл
 
@@ -20,7 +21,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
     protected void save() { // Сохраняет текущее состояние менеджера в указанный файл
         try (FileWriter fileWriter = new FileWriter(String.valueOf(path))) {
             String firstLine = String.join(",", "id", "type", "name", "status",
-                    "description", "epic\n");
+                    "description", "startTime", "duration", "endTime", "epic\n");
             fileWriter.write(firstLine);
             if (!tasks.isEmpty()) {
                 for (Task task : tasks.values()) {
@@ -28,15 +29,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
                     fileWriter.write("\n");
                 }
             }
-            if (!epics.isEmpty()) {
-                for (Epic epic : epics.values()) {
-                    fileWriter.write(toString(epic));
-                    fileWriter.write("\n");
-                }
-            }
             if (!subtasks.isEmpty()) {
                 for (Subtask subtask : subtasks.values()) {
                     fileWriter.write(toString(subtask));
+                    fileWriter.write("\n");
+                }
+            }
+            if (!epics.isEmpty()) {
+                for (Epic epic : epics.values()) {
+                    fileWriter.write(toString(epic));
                     fileWriter.write("\n");
                 }
             }
@@ -54,13 +55,34 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
     }
 
     protected String toString(Task task) {
+        String startTimeString;
+        String durationString;
+        String endTimeString;
+        if (task.getStartTime().isPresent()) {
+            startTimeString  = task.getStartTime().get().format(Task.dateTimeFormatter);
+        } else {
+            startTimeString  = " ";
+        }
+        if (task.getDuration().isPresent()) {
+            durationString = String.valueOf(task.getDuration().get().toMinutes());
+        } else {
+            durationString = " ";
+        }
+        if (task.getEndTime().isPresent()) {
+            endTimeString = task.getEndTime().get().format(Task.dateTimeFormatter);
+        } else {
+            endTimeString = " ";
+        }
+
         if (task.getType().equals(TaskType.SUBTASK)) {
             Subtask subtask = (Subtask) task;
-            return String.join(",", String.valueOf(task.getId()), String.valueOf(task.getType()), task.getName(),
-                    String.valueOf(task.getStatus()), task.getDescription(), String.valueOf(subtask.getIdEpic()));
+            return String.join(",", String.valueOf(task.getId()), String.valueOf(task.getType()),
+                    task.getName(), String.valueOf(task.getStatus()), task.getDescription(), startTimeString,
+                    durationString, endTimeString, String.valueOf(subtask.getIdEpic()));
         }
         return String.join(",", String.valueOf(task.getId()), String.valueOf(task.getType()), task.getName(),
-                String.valueOf(task.getStatus()), task.getDescription());
+                String.valueOf(task.getStatus()), task.getDescription(), startTimeString, durationString,
+                endTimeString);
     }
 
     public String historyToString(HistoryManager manager) {
@@ -132,22 +154,41 @@ public class FileBackedTaskManager extends InMemoryTaskManager { // Логика
         return new FileBackedTaskManager(path);
     }
 
-    public static Task fromString(String value) { // id,type,name,status,description,epic
+    public static Task fromString(String value) { // id,type,name,status,description, startTime, duration, endTime, epic
         String[] taskValues = value.split(",");
         switch (taskValues[1]) {
             case "TASK":
                 Task task = new Task(taskValues[2], taskValues[4], TaskStatus.valueOf(taskValues[3]));
+                if (!taskValues[5].isBlank()) {
+                    task.setStartTime(taskValues[5]);
+                }
+                if (!taskValues[6].isBlank()) {
+                    task.setDuration(Long.parseLong(taskValues[6]));
+                }
                 task.setId(Integer.parseInt(taskValues[0]));
                 return task;
-            case "EPIC":
-                Task epic = new Epic(taskValues[2], taskValues[4]);
-                epic.setId(Integer.parseInt(taskValues[0]));
-                return epic;
             case "SUBTASK":
-                Task subtask = new Subtask(taskValues[2], taskValues[4], TaskStatus.valueOf(taskValues[3]),
-                        Integer.parseInt(taskValues[5]));
+                Task subtask = new Subtask(taskValues[2], taskValues[4], TaskStatus.valueOf(taskValues[3])
+                        , Integer.parseInt(taskValues[8]));
+                if (!taskValues[5].isBlank()) {
+                    subtask.setStartTime(taskValues[5]);
+                }
+                if (!taskValues[6].isBlank()) {
+                    subtask.setDuration(Long.parseLong(taskValues[6]));
+                }
                 subtask.setId(Integer.parseInt(taskValues[0]));
                 return subtask;
+            case "EPIC":
+                Epic epic = new Epic(taskValues[2], taskValues[4], TaskStatus.valueOf(taskValues[3]));
+                epic.setId(Integer.parseInt(taskValues[0]));
+                if (!subtasks.isEmpty()) {
+                    List<Subtask> subtasksEpic = subtasks.values().stream()
+                            .filter(st -> epic.getId() == st.getIdEpic())
+                            .collect(Collectors.toList());
+                    epic.subtasks.addAll(subtasksEpic);
+                    epic.checkDataTimeDurationEpic();
+                }
+                return epic;
         }
         return null;
     }
