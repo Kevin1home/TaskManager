@@ -9,7 +9,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private final CustomLinkedList history = new CustomLinkedList();
 
-    private class CustomLinkedList extends LinkedList<Task> {
+    private static class CustomLinkedList extends LinkedList<Task> {
 
         private final Map<Integer, Node<Task>> nodes = new HashMap<>();
         private int size = 0;
@@ -24,13 +24,16 @@ public class InMemoryHistoryManager implements HistoryManager {
                 first = null;
                 last = null;
             }
+
             Node<Task> node = new Node<>(last, task, null);
+
             if (first == null && last == null) {
                 first = node;
             }
             if (last != null) {
                 last.next = node;
             }
+
             last = node;
             nodes.put(task.getId(), node);
             size++;
@@ -38,6 +41,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         public List<Task> getTasks() { // Собирает задачи в ArrayList
             List<Task> viewedTasks = new ArrayList<>();
+
             if (first == null) {
                 return viewedTasks;
             }
@@ -49,21 +53,26 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         private void removeNode(Node<Task> node) {
+
             if (node == null) {
                 System.out.println("Узла нет");
                 return;
             }
+
             if (node == first && node.next != null) {
                 Node<Task> nextNode = node.next;
                 nextNode.prev = null;
                 first = nextNode;
+
             } else if (node == first && node.next == null) {
                 first = null;
                 last = null;
+
             } else if (node == last && node.prev != null) {
                 Node<Task> prevNode = node.prev;
                 prevNode.next = null;
                 last = prevNode;
+
             } else {
                 Node<Task> nextNode = node.next;
                 nextNode.prev = node.prev;
@@ -73,7 +82,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             size--;
         }
 
-        private class Node<E> {
+        private static class Node<E> {
             E task;
             Node<E> next;
             Node<E> prev;

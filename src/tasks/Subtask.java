@@ -6,26 +6,26 @@ public class Subtask extends Task {
     public Subtask(String name, String description, TaskStatus status, int idEpic) {
         super(name, description, status);
         this.idEpic = idEpic;
-        this.type = TaskType.SUBTASK;
+        type = String.valueOf(TaskType.SUBTASK);
     }
 
     public Subtask(String name, String description, int idEpic) {
         super(name, description);
         this.idEpic = idEpic;
-        this.type = TaskType.SUBTASK;
+        type = String.valueOf(TaskType.SUBTASK);
     }
 
     public Subtask(String name, String description, String startTime, long durationMinutes, int idEpic) {
         super(name, description, startTime, durationMinutes);
         this.idEpic = idEpic;
-        this.type = TaskType.SUBTASK;
+        type = String.valueOf(TaskType.SUBTASK);
     }
 
-    public Subtask(String name, String description, TaskStatus status, String startTime,
-                   long durationMinutes, int idEpic) {
+    public Subtask(String name, String description, TaskStatus status, String startTime, long durationMinutes,
+                   int idEpic) {
         super(name, description, status, startTime, durationMinutes);
         this.idEpic = idEpic;
-        this.type = TaskType.SUBTASK;
+        type = String.valueOf(TaskType.SUBTASK);
     }
 
     @Override
@@ -36,6 +36,10 @@ public class Subtask extends Task {
                 ", id=" + this.getId() +
                 ", status='" + this.getStatus() + '\'' +
                 ", idEpic=" + idEpic +
+                ", type='" + this.getType() + '\'' +
+                ", startTime=" + this.getStartTime() + '\'' +
+                ", duration=" + this.getDuration() + '\'' +
+                ", endTime=" + this.getEndTime() + '\'' +
                 '}';
     }
 

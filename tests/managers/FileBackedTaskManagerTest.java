@@ -38,9 +38,11 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         taskManager.createEpic(epic);
         subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
         taskManager.createSubtask(subtask);
+
         taskManager.getUsualTaskById(task.getId());
         taskManager.getEpicById(epic.getId());
         taskManager.getSubtaskById(subtask.getId());
+
         List<String> allLines = readAllLines(pathTest);
 
         int expectedLinesQnt = 6; // parameters, Tasks (+3), EmptyLine, history
@@ -94,6 +96,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         taskManager.createEpic(epic);
         subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
         taskManager.createSubtask(subtask);
+
         taskManager.getUsualTaskById(task.getId());
         taskManager.getEpicById(epic.getId());
         taskManager.getSubtaskById(subtask.getId());
@@ -115,8 +118,8 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
     @Test
     void shouldLoadFromNewEmptyFile() { // checking method loadFromFile()
-        // loading from new empty file
-        loadFromFile(pathTest);
+
+        loadFromFile(pathTest); // loading from new empty file
 
         boolean isEmpty = taskManager.getTasks().isEmpty() && taskManager.getEpics().isEmpty()
                 && taskManager.getSubtasks().isEmpty() && taskManager.getHistoryManager().getHistory().isEmpty();

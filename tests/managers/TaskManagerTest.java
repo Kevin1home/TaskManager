@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import tasks.*;
 import tasks.TaskStatus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
@@ -19,14 +20,16 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     protected void initTasks() {
         task = new Task("Task", "DescrT", TaskStatus.NEW);
         epic = new Epic("Epic1", "DescrEp1");
-        // use extra: subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
+        // For creating tests: subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
     }
 
     @Test
     protected void shouldReturnHistorySize1FromHistoryManager() { // checking method getHistoryManager()
         taskManager.createTask(task);
+
         taskManager.getUsualTaskById(1);
         List<Task> history = taskManager.getHistoryManager().getHistory();
+
         int expectedHistorySize = 1;
         int actualHistorySize = history.size();
 
@@ -36,6 +39,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     @Test
     protected void shouldReturnHistorySize0FromHistoryManager() { // checking method getHistoryManager()
         List<Task> history = taskManager.getHistoryManager().getHistory();
+
         int expectedHistorySize = 0;
         int actualHistorySize = history.size();
 
@@ -127,6 +131,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     protected void shouldReturnNextIdNumber2() { //checking method generateId()
         int initialIdInSystemIs = 1;
         int expectedIdNumber = initialIdInSystemIs + 1;
+
         taskManager.generateId(); // +1
         int actualIdNumber = taskManager.generateId(); // cause 'return nextId++' (please see method generateId())
 
@@ -137,11 +142,38 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     protected void shouldReturnNextIdNumber3() { //checking method generateId()
         int initialIdInSystemIs = 1;
         int expectedIdNumber = initialIdInSystemIs + 2;
+
         taskManager.generateId(); // +1
         taskManager.generateId(); // +1
+
         int actualIdNumber = taskManager.generateId(); // cause 'return nextId++' (please see method generateId())
 
         Assertions.assertEquals(expectedIdNumber, actualIdNumber);
+    }
+
+    @Test
+    protected void shouldReturnCreatedSubtaskFromEpicSubtasks() { // checking method getEpicSubtasks(Epic epic)
+        taskManager.createEpic(epic);
+        subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
+        taskManager.createSubtask(subtask);
+
+        ArrayList<Subtask> subtasks = taskManager.getEpicSubtasks(epic);
+
+        Subtask expectedSubtask = subtask;
+        Subtask actualSubtask = subtasks.get(0);
+
+        Assertions.assertEquals(expectedSubtask, actualSubtask);
+    }
+
+    @Test
+    protected void shouldReturn0SubtaskFromEpicSubtasks() { // checking method getEpicSubtasks(Epic epic)
+        taskManager.createEpic(epic);
+        ArrayList<Subtask> subtasks = taskManager.getEpicSubtasks(epic);
+
+        int expectedSize = 0;
+        int actualSize = subtasks.size();
+
+        Assertions.assertEquals(expectedSize, actualSize);
     }
 
     @Test
@@ -150,6 +182,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         String expectedName = "NewTaskText";
         Task updatedTaskData = new Task("NewTaskText", "DescrT", TaskStatus.NEW);
+
         taskManager.updateUsualTask(updatedTaskData, task.getId());
         String actualName = taskManager.getTasks().get(task.getId()).getName();
 
@@ -162,6 +195,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         String expectedDescription = "NewTaskDescrT";
         Task updatedTaskData = new Task("Task", "NewTaskDescrT", TaskStatus.NEW);
+
         taskManager.updateUsualTask(updatedTaskData, task.getId());
         String actualDescription = taskManager.getTasks().get(task.getId()).getDescription();
 
@@ -174,10 +208,35 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         TaskStatus expectedStatus = TaskStatus.DONE;
         Task updatedTaskData = new Task("Task", "DescrT", TaskStatus.DONE);
+
         taskManager.updateUsualTask(updatedTaskData, task.getId());
         TaskStatus actualStatus = taskManager.getTasks().get(task.getId()).getStatus();
 
         Assertions.assertEquals(expectedStatus, actualStatus);
+    }
+
+    @Test
+    protected void shouldNotUpdateTaskWithWrongGivenIdAndNotCreateNew() { //checking method updateUsualTask(T t, int id)
+        taskManager.createTask(task); // ID = 1
+
+        Task updatedTaskData = new Task("Task123", "DescrT123");
+
+        final IllegalArgumentException exception = Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> taskManager.updateUsualTask(updatedTaskData, 10)
+        );
+
+        Assertions.assertEquals("Usual Task with such ID does not exist", exception.getMessage());
+
+        String expectedName = "Task";
+        String actualName = taskManager.getTasks().get(1).getName();
+
+        Assertions.assertEquals(expectedName, actualName);
+
+        int expectedSize = 1;
+        int actualSize = taskManager.getTasks().size();
+
+        Assertions.assertEquals(expectedSize, actualSize);
     }
 
     @Test
@@ -186,6 +245,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         String expectedName = "NewEpicText";
         Epic updatedEpicData = new Epic("NewEpicText", "DescrEp");
+
         taskManager.updateEpic(updatedEpicData, epic.getId());
         String actualName = taskManager.getEpics().get(epic.getId()).getName();
 
@@ -198,6 +258,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         String expectedDescription = "NewEpicDescrEp";
         Epic updatedEpicData = new Epic("Epic1", "NewEpicDescrEp");
+
         taskManager.updateEpic(updatedEpicData, epic.getId());
         String actualDescription = taskManager.getEpics().get(epic.getId()).getDescription();
 
@@ -214,6 +275,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         int expectedSizeOfSubtasks = 2;
         Epic updatedEpicData = new Epic("Epic1", "NewEpicDescrEp");
+
         taskManager.updateEpic(updatedEpicData, epic.getId());
         int actualSizeOfSubtasks = taskManager.getEpics().get(epic.getId()).subtasks.size();
 
@@ -229,6 +291,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         String expectedName = "NewSubtaskText";
         Subtask updatedSTData = new Subtask("NewSubtaskText", "DescrSt2", TaskStatus.NEW, epic.getId());
+
         taskManager.updateSubtask(updatedSTData, subtask.getId());
         String actualName = taskManager.getSubtasks().get(subtask.getId()).getName();
 
@@ -243,6 +306,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         String expectedDescription = "NewSDescrSt2";
         Subtask updatedSTData = new Subtask("Subtask2", "NewSDescrSt2", TaskStatus.NEW, epic.getId());
+
         taskManager.updateSubtask(updatedSTData, subtask.getId());
         String actualDescription = taskManager.getSubtasks().get(subtask.getId()).getDescription();
 
@@ -257,6 +321,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
 
         TaskStatus expectedStatus = TaskStatus.DONE;
         Subtask updatedSTData = new Subtask("Subtask2", "DescrSt2", TaskStatus.DONE, epic.getId());
+
         taskManager.updateSubtask(updatedSTData, subtask.getId());
         TaskStatus actualStatus = taskManager.getSubtasks().get(subtask.getId()).getStatus();
 
@@ -375,6 +440,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.createEpic(epic);
         subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
         taskManager.createSubtask(subtask);
+
         HashMap<Integer, Subtask> subtasks = taskManager.getSubtasks();
 
         Task expectedSubtask = subtask;
@@ -386,15 +452,16 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     @Test
     protected void shouldReturnSortedSetOfTasksByPriority() { // checking method getPrioritizedTasks();
         taskManager.createTask(task); // +1 Task without DateTimeParameters
-        Task taskP = new Task("Task", "DescrT", TaskStatus.NEW,
-                "02.06.2024, 09:30", 60L);
+
+        Task taskP = new Task("Task", "DescrT", TaskStatus.NEW, "02.06.2024, 09:30", 60L);
         taskManager.createTask(taskP); // +1 Task with DateTimeParameters
+
         taskManager.createEpic(epic); // +0 Epic (will not get to prioritizedTasks list)
-        subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
-                "02.06.2024, 12:30", 120L, epic.getId());
+
+        subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, "02.06.2024, 12:30", 120L, epic.getId());
         taskManager.createSubtask(subtask); // +1 Subtask with DateTimeParameters
-        Subtask subtaskP = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
-                "01.05.2024, 09:30", 80L, epic.getId());
+
+        Subtask subtaskP = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, "01.05.2024, 09:30", 80L, epic.getId());
         taskManager.createSubtask(subtaskP); // +1 Subtask with DateTimeParameters
 
         TreeSet<Task> prioritizedTasks = taskManager.getPrioritizedTasks();
@@ -409,21 +476,23 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     @Test
     protected void shouldNotCreateTasksWithWrongDateTimeValidation() { // checking method isValidDateTime();
         taskManager.createTask(task); // +1 Task without DateTimeParameters
-        Task taskP = new Task("Task", "DescrT", TaskStatus.NEW,
-                "02.06.2024, 09:30", 60L);
+
+        Task taskP = new Task("Task", "DescrT", TaskStatus.NEW, "02.06.2024, 09:30", 60L);
         taskManager.createTask(taskP); // +1 Task with right DateTimeParameters
+
         taskManager.createEpic(epic); // +1 Epic
-        subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
-                "06.06.2024, 12:30", 120L, epic.getId());
+
+        subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, "06.06.2024, 12:30", 120L, epic.getId());
         taskManager.createSubtask(subtask); // +1 Subtask with right DateTimeParameters
-        Task taskWrong = new Task("Task", "DescrT", TaskStatus.NEW,
-                "10.06.2024, 09:30", -100L);
+
+        Task taskWrong = new Task("Task", "DescrT", TaskStatus.NEW, "10.06.2024, 09:30", -100L);
         taskManager.createTask(taskWrong); // +1 Task with wrong Duration (-100 => 0)
-        Subtask subtaskP = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
-                "06.06.2024, 13:30", 80L, epic.getId());
+
+        Subtask subtaskP = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, "06.06.2024, 13:30", 80L, epic.getId());
         taskManager.createSubtask(subtaskP); // +0 Subtask with wrong startTime
-        Subtask subtaskWrong = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW,
-                "06.06.2024, 11:30", 180L, epic.getId());
+
+        Subtask subtaskWrong = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, "06.06.2024, 11:30", 180L,
+                epic.getId());
         taskManager.createSubtask(subtaskWrong); // +0 Subtask with wrong endTime
 
         int expectedSize = 5;
@@ -439,6 +508,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     protected void shouldReturnEmptyListAfterDeleting1Task() { // checking method deleteTaskById(int id)
         taskManager.createTask(task); // +1 Task
         taskManager.deleteTaskById(task.getId()); // -1 Task
+
         HashMap<Integer, Task> tasks = taskManager.getTasks();
 
         boolean listIsEmpty = tasks.isEmpty();
@@ -463,6 +533,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
     protected void shouldReturnEmptyListAfterDeleting1Epic() { // checking method deleteEpicById(int id)
         taskManager.createEpic(epic); // +1 Epic
         taskManager.deleteEpicById(epic.getId()); // -1 Epic
+
         HashMap<Integer, Epic> epics = taskManager.getEpics();
 
         boolean listIsEmpty = epics.isEmpty();
@@ -480,7 +551,6 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         );
 
         Assertions.assertEquals("Epic with such ID does not exist", exception.getMessage());
-
     }
 
     @Test
@@ -489,6 +559,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
         taskManager.createSubtask(subtask); // +1 Subtask
         taskManager.deleteSubtaskById(subtask.getId()); // -1 Subtask
+
         HashMap<Integer, Subtask> subtasks = taskManager.getSubtasks();
 
         boolean listIsEmpty = subtasks.isEmpty();
@@ -508,7 +579,6 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         );
 
         Assertions.assertEquals("Subtask with such ID does not exist", exception.getMessage());
-
     }
 
     @Test
@@ -516,6 +586,7 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.createTask(task); // +1 Task
         taskManager.createTask(task); // +1 Task
         taskManager.deleteAllUsualTasks(); // -2 Tasks
+
         HashMap<Integer, Task> tasks = taskManager.getTasks();
 
         boolean listIsEmpty = tasks.isEmpty();
@@ -528,11 +599,12 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.createEpic(epic); // +1 Epic
         taskManager.createEpic(epic); // +1 Epic
         taskManager.deleteAllEpics(); // -2 Epics
+
         HashMap<Integer, Epic> epics = taskManager.getEpics();
 
         boolean listIsEmpty = epics.isEmpty();
 
-        Assertions.assertTrue(listIsEmpty);;
+        Assertions.assertTrue(listIsEmpty);
     }
 
     @Test
@@ -542,11 +614,12 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         taskManager.createSubtask(subtask); // +1 Subtask
         taskManager.createSubtask(subtask); // +1 Subtask
         taskManager.deleteAllSubtasks(); // -2 Subtasks
+
         HashMap<Integer, Subtask> subtasks = taskManager.getSubtasks();
 
         boolean listIsEmpty = subtasks.isEmpty();
 
-        Assertions.assertTrue(listIsEmpty);;
+        Assertions.assertTrue(listIsEmpty);
     }
 
     @Test
@@ -556,13 +629,14 @@ abstract class TaskManagerTest<T extends TaskManager> { // Testing methods of in
         subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
         taskManager.createSubtask(subtask); // +1 Subtask
         taskManager.deleteAllTasksAllTypes(); // -1 Task -1 Epic -1 Subtask
+
         HashMap<Integer, Task> tasks = taskManager.getTasks();
         HashMap<Integer, Epic> epics = taskManager.getEpics();
         HashMap<Integer, Subtask> subtasks = taskManager.getSubtasks();
 
         boolean listIsEmpty = tasks.isEmpty() && epics.isEmpty() && subtasks.isEmpty();
 
-        Assertions.assertTrue(listIsEmpty);;
+        Assertions.assertTrue(listIsEmpty);
     }
 
 }

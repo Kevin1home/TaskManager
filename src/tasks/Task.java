@@ -10,16 +10,19 @@ public class Task {
     private String description;
     private int id = 0;
     private TaskStatus status;
-    protected TaskType type;
+    protected String type;
     protected LocalDateTime startTime;
     protected Duration duration;
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+
+    public Task() {
+    }
 
     public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.type = TaskType.TASK;
+        this.type = String.valueOf(TaskType.TASK);
         this.startTime = null;
         this.duration = null;
     }
@@ -28,7 +31,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = TaskStatus.NEW;
-        this.type = TaskType.TASK;
+        this.type = String.valueOf(TaskType.TASK);
         this.startTime = null;
         this.duration = null;
     }
@@ -37,7 +40,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = TaskStatus.NEW;
-        this.type = TaskType.TASK;
+        this.type = String.valueOf(TaskType.TASK);
         setStartTime(startTime);
         setDuration(durationMinutes);
     }
@@ -46,7 +49,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.type = TaskType.TASK;
+        this.type = String.valueOf(TaskType.TASK);
         setStartTime(startTime);
         setDuration(durationMinutes);
     }
@@ -59,6 +62,10 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status='" + status + '\'' +
+                ", type='" + type + '\'' +
+                ", startTime=" + startTime + '\'' +
+                ", duration=" + duration + '\'' +
+                ", endTime=" + getEndTime() + '\'' +
                 '}';
     }
 
@@ -94,7 +101,7 @@ public class Task {
         this.status = status;
     }
 
-    public TaskType getType() {
+    public String getType() {
         return type;
     }
 
@@ -120,7 +127,7 @@ public class Task {
         }
     }
 
-    public Optional<LocalDateTime> getEndTime(){
+    public Optional<LocalDateTime> getEndTime() {
         if (getStartTime().isPresent() && getDuration().isPresent()) {
             return Optional.of(startTime.plus(duration));
         }

@@ -7,7 +7,7 @@ import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
 
-abstract class HistoryManagerTest <T extends HistoryManager> {
+abstract class HistoryManagerTest<T extends HistoryManager> {
 
     T historyManager;
     Task task1;
@@ -22,8 +22,8 @@ abstract class HistoryManagerTest <T extends HistoryManager> {
         task2.setId(2);
         epic = new Epic("Epic1", "DescrEp1");
         task2.setId(3);
-        // use extra: subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
-        // subtask.setId(4);
+        // For creating tests: subtask = new Subtask("Subtask2", "DescrSt2", TaskStatus.NEW, epic.getId());
+        // For creating tests: subtask.setId(4);
     }
 
     @Test
@@ -38,7 +38,6 @@ abstract class HistoryManagerTest <T extends HistoryManager> {
         int actualSize = historyManager.getHistory().size();
 
         Assertions.assertEquals(expectedSize, actualSize);
-
     }
 
     @Test
@@ -51,7 +50,6 @@ abstract class HistoryManagerTest <T extends HistoryManager> {
         int actualSize = historyManager.getHistory().size();
 
         Assertions.assertEquals(expectedSize, actualSize);
-
     }
 
     @Test
@@ -62,7 +60,6 @@ abstract class HistoryManagerTest <T extends HistoryManager> {
         int actualSize = historyManager.getHistory().size();
 
         Assertions.assertEquals(expectedSize, actualSize);
-
     }
 
     @Test
@@ -72,7 +69,6 @@ abstract class HistoryManagerTest <T extends HistoryManager> {
         int actualSize = historyManager.getHistory().size();
 
         Assertions.assertEquals(expectedSize, actualSize);
-
     }
 
     @Test

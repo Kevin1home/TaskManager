@@ -107,6 +107,7 @@ class EpicTest {
 
         String expectedStartTime = "01.06.2024, 09:30";
         String actualStartTime;
+
         if (epic.getStartTime().isPresent()) {
             actualStartTime = epic.getStartTime().get().format(Task.dateTimeFormatter);
         } else {
@@ -114,24 +115,21 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedStartTime, actualStartTime);
-
     }
 
     @Test
     protected void shouldReturnEarliestStartTimeByEpic() { // checking method checkStartTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                "02.06.2024, 13:30", 60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "02.06.2024, 13:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2",
-                "02.06.2024, 10:30", 80L, epic.getId());
+        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", "02.06.2024, 10:30", 80L, epic.getId());
         taskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2",
-                "01.06.2024, 09:30", 120L, epic.getId());
+        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2", "01.06.2024, 09:30", 120L, epic.getId());
         taskManager.createSubtask(subtask3);
         epic.checkStartTimeEpic();
 
         String expectedStartTime = "01.06.2024, 09:30";
         String actualStartTime;
+
         if (epic.getStartTime().isPresent()) {
             actualStartTime = epic.getStartTime().get().format(Task.dateTimeFormatter);
         } else {
@@ -139,13 +137,11 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedStartTime, actualStartTime);
-
     }
 
     @Test
     protected void shouldReturnStartTimeByEpicWithSubtaskWithoutDateTimeParameters() { // checking checkStartTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                "01.06.2024, 09:30", 60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId());
         taskManager.createSubtask(subtask2);
@@ -153,6 +149,7 @@ class EpicTest {
 
         String expectedStartTime = "01.06.2024, 09:30";
         String actualStartTime;
+
         if (epic.getStartTime().isPresent()) {
             actualStartTime = epic.getStartTime().get().format(Task.dateTimeFormatter);
         } else {
@@ -160,13 +157,11 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedStartTime, actualStartTime);
-
     }
 
     @Test
     protected void shouldReturnStartTimeNullByEpicWithSubtaskWithNullDateTimeParameters() { // checkStartTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                null, 60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", null, 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId());
         taskManager.createSubtask(subtask2);
@@ -174,6 +169,7 @@ class EpicTest {
 
         String expectedStartTime = null;
         String actualStartTime;
+
         if (epic.getStartTime().isPresent()) {
             actualStartTime = epic.getStartTime().get().format(Task.dateTimeFormatter);
         } else {
@@ -181,24 +177,21 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedStartTime, actualStartTime);
-
     }
 
     @Test
     protected void shouldReturnDurationByEpicWithSubtasks() { // checking method checkDurationEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                "02.06.2024, 13:30", 60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "02.06.2024, 13:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2",
-                "02.06.2024, 10:30", 80L, epic.getId());
+        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", "02.06.2024, 10:30", 80L, epic.getId());
         taskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2",
-                "01.06.2024, 09:30", 120L, epic.getId());
+        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2", "01.06.2024, 09:30", 120L, epic.getId());
         taskManager.createSubtask(subtask3);
         epic.checkDurationEpic();
 
         long expectedDuration = 260L; // 60 + 80 + 120
         long actualDuration;
+
         if (epic.getDuration().isPresent()) {
             actualDuration = epic.getDuration().get().toMinutes();
         } else {
@@ -206,18 +199,17 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedDuration, actualDuration);
-
     }
 
     @Test
     protected void shouldReturnDuration0ByEpicWithSubtaskWithNegativeDuration() { // checking method checkDurationEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                "02.06.2024, 13:30", -60, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "02.06.2024, 13:30", -60, epic.getId());
         taskManager.createSubtask(subtask1);
         epic.checkDurationEpic();
 
         long expectedDuration = 0L;
         long actualDuration;
+
         if (epic.getDuration().isPresent()) {
             actualDuration = epic.getDuration().get().toMinutes();
         } else {
@@ -225,21 +217,19 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedDuration, actualDuration);
-
     }
 
     @Test
     protected void shouldReturnDurationByEpicWithSubtaskWithNegativeDuratioAndNormalDuration() { // checkDurationEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                "02.06.2024, 13:30", -60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "02.06.2024, 13:30", -60L, epic.getId());
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2",
-                "02.06.2024, 10:30", 80L, epic.getId());
+        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", "02.06.2024, 10:30", 80L, epic.getId());
         taskManager.createSubtask(subtask2);
         epic.checkDurationEpic();
 
         long expectedDuration = 80L; // (-60 => 0) + 80
         long actualDuration;
+
         if (epic.getDuration().isPresent()) {
             actualDuration = epic.getDuration().get().toMinutes();
         } else {
@@ -247,18 +237,17 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedDuration, actualDuration);
-
     }
 
     @Test
     protected void shouldReturnEndTimeByEpicAsBySubtask() { // checking method checkEndTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                "01.06.2024, 09:30", 60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         epic.checkEndTimeEpic();
 
         String expectedEndTime = "01.06.2024, 10:30";
         String actualEndTime;
+
         if (epic.getEndTime().isPresent()) {
             actualEndTime = epic.getEndTime().get().format(Task.dateTimeFormatter);
         } else {
@@ -266,24 +255,21 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedEndTime, actualEndTime);
-
     }
 
     @Test
     protected void shouldReturnLatestEndTimeByEpic() { // checking method checkEndTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                "01.06.2024, 09:30", 60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2",
-                "02.06.2024, 10:30", 80L, epic.getId());
+        Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", "02.06.2024, 10:30", 80L, epic.getId());
         taskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2",
-                "02.06.2024, 13:30", 120L, epic.getId());
+        Subtask subtask3 = new Subtask("Subtask2", "DescrSt2", "02.06.2024, 13:30", 120L, epic.getId());
         taskManager.createSubtask(subtask3);
         epic.checkEndTimeEpic();
 
         String expectedEndTime = "02.06.2024, 15:30";
         String actualSEndTime;
+
         if (epic.getEndTime().isPresent()) {
             actualSEndTime = epic.getEndTime().get().format(Task.dateTimeFormatter);
         } else {
@@ -291,13 +277,11 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedEndTime, actualSEndTime);
-
     }
 
     @Test
     protected void shouldReturnEndTimeByEpicWithSubtaskWithoutDateTimeParameters() { // checking checkEndTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                "01.06.2024, 09:30", 60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", "01.06.2024, 09:30", 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId());
         taskManager.createSubtask(subtask2);
@@ -305,6 +289,7 @@ class EpicTest {
 
         String expectedEndTime = "01.06.2024, 10:30";
         String actualSEndTime;
+
         if (epic.getEndTime().isPresent()) {
             actualSEndTime = epic.getEndTime().get().format(Task.dateTimeFormatter);
         } else {
@@ -312,13 +297,11 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedEndTime, actualSEndTime);
-
     }
 
     @Test
     protected void shouldReturnEndTimeNullByEpicWithSubtaskWithNullDateTimeParameters() { // checking checkEndTimeEpic()
-        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1",
-                null, 60L, epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "DescrSt1", null, 60L, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "DescrSt2", epic.getId());
         taskManager.createSubtask(subtask2);
@@ -326,6 +309,7 @@ class EpicTest {
 
         String expectedEndTime = null;
         String actualEndTime;
+
         if (epic.getEndTime().isPresent()) {
             actualEndTime = epic.getEndTime().get().format(Task.dateTimeFormatter);
         } else {
@@ -333,7 +317,6 @@ class EpicTest {
         }
 
         Assertions.assertEquals(expectedEndTime, actualEndTime);
-
     }
 
 }
